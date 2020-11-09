@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/images/">
+        <file>add.png</file>
+        <file>clear.png</file>
+        <file>close.png</file>
+        <file>help.png</file>
+        <file>large.png</file>
+        <file>left.png</file>
+        <file>mesage.png</file>
+        <file>open.png</file>
+        <file>Qt.png</file>
+        <file>right.png</file>
+        <file>save.png</file>
+        <file>select.png</file>
+        <file>small.png</file>
+        <file>stop.png</file>
+        <file>toLeft.png</file>
+        <file>toRight.png</file>
+        <file>logo.png</file>
+        <file>quit.png</file>
+    </qresource>
+</RCC>
