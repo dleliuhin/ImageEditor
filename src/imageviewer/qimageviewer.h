@@ -1,5 +1,4 @@
-#ifndef QIMAGEVIEWER_H
-#define QIMAGEVIEWER_H
+#pragma once
 
 #include <QWidget>
 #include <QImage>
@@ -9,61 +8,60 @@
 #include <QFileInfo>
 #include <QFileInfoList>
 
+//=======================================================================================
+
 class QImageViewer : public QWidget
 {
     Q_OBJECT
+
 public:
-    explicit QImageViewer(QWidget *parent = 0);
-    explicit QImageViewer(QWidget *parent,QString &caption,QString &dir,QString &filer);
+
+    explicit QImageViewer( QWidget* parent = nullptr );
+    explicit QImageViewer( QWidget* parent,
+                           const QString& caption,
+                           const QString& dir,
+                           const QString& filer );
+
     ~QImageViewer();
 
-    QWidget *parent;
+    //-----------------------------------------------------------------------------------
 
-    int index;
-    int angle;
+    QWidget* parent { nullptr };
+
+    int index {0};
+    int angle {0};
+
     QSize size;
     QString filename;
     QString path;
     QDir dir;
-    QFileInfo fileInfo;
+    QFileInfo file_info;
     QFileInfoList fileInfoList;
 
     QImage image;
     QPixmap pixmap;
 
-    /* open a file */
-    int openImageFile(const QString &caption,const QString &dir,const QString &filer);
+    //-----------------------------------------------------------------------------------
 
-    /* close file */
-    int closeImageFile(void);
+    int open_img( const QString& caption, const QString& dir, const QString& filer );
+    int close_img();
+    int del_img();
+    int zoom_in();
+    int zoom_out();
+    int rotato_to_right();
+    int spin_to_left();
 
-    /* delete file */
-    int delImageFile(void);
-
-    /* file skipping */
-    int last(void);
-    int next(void);
-
-    /* change image */
-    int zoomIn(void);
-    int zoomOut(void);
-    int spinToRight(void);
-    int spinToLeft(void);
+    //-----------------------------------------------------------------------------------
 
 private:
-    /* init param */
-    void initImageResource(void);
 
-    /* open a image */
-    int loadImageResource(void);
-    int loadImageResource(const QString &caption,const QString &dir,const QString &filer);
+    void _init_img();
+    int _load_img();
+    int _load_img( const QString& caption, const QString& dir, const QString& filer );
+    int _upgrade_file_info( const QString& filename, const int angle, const int scale );
+    int _get_files_info();
+    int _get_file_idx();
 
-    /* get file info list from current path */
-    int getFileInfoList(void);
-    int getFileCurIndex(void);
-    int upgradeFileInfo(QString &filename,int angle,int sizeScale);
-
-public slots:
 };
 
-#endif // QIMAGEVIEWER_H
+//=======================================================================================

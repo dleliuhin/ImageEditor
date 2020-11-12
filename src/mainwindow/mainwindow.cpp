@@ -62,7 +62,7 @@ MainWindow::~MainWindow()
 //=======================================================================================
 void MainWindow::opened()
 {
-    auto ok = _image_viewer->openImageFile( "Select image:",
+    auto ok = _image_viewer->open_img( "Select image:",
                                             "$$PWD",
                                             "Images (*.jpg *.jpeg *.png *.bmp *.gif)" );
     if (ok)
@@ -77,12 +77,12 @@ void MainWindow::opened()
 void MainWindow::closed()
 {
     _init_img_resource();
-    _image_viewer->closeImageFile();
+    _image_viewer->close_img();
 }
 //=======================================================================================
 void MainWindow::to_left()
 {
-    if ( _image_viewer->spinToLeft() )
+    if ( _image_viewer->spin_to_left() )
     {
         QMessageBox::information(this, "Error", "Open a image, please!");
         return ;
@@ -93,7 +93,7 @@ void MainWindow::to_left()
 //=======================================================================================
 void MainWindow::to_right()
 {
-    if ( _image_viewer->spinToRight() )
+    if ( _image_viewer->rotato_to_right() )
     {
         QMessageBox::information(this, "Error", "Open a image, please!");
         return ;
@@ -104,7 +104,7 @@ void MainWindow::to_right()
 //=======================================================================================
 void MainWindow::to_large()
 {
-    if ( _image_viewer->zoomIn() )
+    if ( _image_viewer->zoom_in() )
     {
         QMessageBox::information(this, "Error", "Open a image, please!");
         return ;
@@ -115,7 +115,7 @@ void MainWindow::to_large()
 //=======================================================================================
 void MainWindow::to_less()
 {
-    if ( _image_viewer->zoomOut() )
+    if ( _image_viewer->zoom_out() )
     {
         QMessageBox::information(this, "Error", "Open a image, please!");
         return ;
@@ -140,7 +140,7 @@ void MainWindow::deleted()
     if ( message.exec() == QMessageBox::No )
         return;
 
-    if ( _image_viewer->delImageFile() )
+    if ( _image_viewer->del_img() )
     {
         QMessageBox::warning(this, "Error", "Delete a image failed!");
         return ;
