@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QMenu>
@@ -27,8 +26,6 @@ public slots:
 
     void opened();
     void closed();
-    void last();
-    void next();
     void to_left();
     void to_right();
     void to_large();
@@ -60,12 +57,10 @@ private:
 
     //-----------------------------------------------------------------------------------
 
-    void setQImageViewerWidget();
-    void setWindowComponet();
-    void initImageResource();
-    void load_img_resource();
+    void _init_img_viewer();
+    void _init_window_componet();
+    void _load_img_resource();
+    void _init_img_resource();
 
 };
 //=======================================================================================
-
-#endif // MAINWINDOW_H
