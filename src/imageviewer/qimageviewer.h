@@ -10,19 +10,18 @@
 
 //=======================================================================================
 
-class QImageViewer : public QWidget
+class QImageView : public QWidget
 {
     Q_OBJECT
 
 public:
 
-    explicit QImageViewer( QWidget* parent = nullptr );
-    explicit QImageViewer( QWidget* parent,
+    explicit QImageView( QWidget* parent = nullptr );
+    explicit QImageView( QWidget* parent,
                            const QString& caption,
                            const QString& dir,
                            const QString& filer );
-
-    ~QImageViewer();
+    virtual ~QImageView();
 
     //-----------------------------------------------------------------------------------
 
@@ -50,6 +49,12 @@ public:
     int zoom_out();
     int rotato_to_right();
     int spin_to_left();
+
+    //-----------------------------------------------------------------------------------
+
+signals:
+
+    void loaded( const QImage& src );
 
     //-----------------------------------------------------------------------------------
 

@@ -7,6 +7,8 @@
 #include <QStatusBar>
 #include <QLabel>
 #include <QFileInfoList>
+#include <QRubberBand>
+#include <QMouseEvent>
 
 #include "qimageviewer.h"
 
@@ -36,12 +38,12 @@ public slots:
 
 private:
 
-    QMenuBar*     _menu_bar       { nullptr };
-    QToolBar*     _tool_bar       { nullptr };
-    QWidget*      _central_widget { nullptr };
-    QStatusBar*   _status_bar     { nullptr };
-    QLabel*       _image_label    { nullptr };
-    QImageViewer* _image_viewer   { nullptr };
+    QMenuBar*   _menu_bar       { nullptr };
+    QToolBar*   _tool_bar       { nullptr };
+    QWidget*    _central_widget { nullptr };
+    QStatusBar* _status_bar     { nullptr };
+    QLabel*     _image_label    { nullptr };
+    QImageView* _image_viewer   { nullptr };
 
     //-----------------------------------------------------------------------------------
 
@@ -61,6 +63,19 @@ private:
     void _init_window_componet();
     void _load_img_resource();
     void _init_img_resource();
+
+    //-----------------------------------------------------------------------------------
+
+    QRubberBand* _rubber_band { nullptr };
+
+    //-----------------------------------------------------------------------------------
+
+    void mouseMoveEvent( QMouseEvent* event );
+    void mousePressEvent( QMouseEvent* event );
+
+private slots:
+
+    void _im_show( const QImage& src );
 
 };
 //=======================================================================================

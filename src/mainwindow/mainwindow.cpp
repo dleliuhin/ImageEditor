@@ -11,6 +11,14 @@
 #include <QGridLayout>
 #include <QErrorMessage>
 #include <QApplication>
+#include <QRect>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
+
+//=======================================================================================
+
+using namespace cv;
 
 //=======================================================================================
 MainWindow::MainWindow( QWidget* parent )
@@ -20,7 +28,7 @@ MainWindow::MainWindow( QWidget* parent )
     , _central_widget ( new QWidget( this )    )
     , _status_bar     ( new QStatusBar( this ) )
     , _image_label    ( new QLabel( this )     )
-    , _image_viewer   ( new QImageViewer()     )
+    , _image_viewer   ( new QImageView()     )
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
@@ -35,6 +43,10 @@ MainWindow::MainWindow( QWidget* parent )
 
     /* init resource */
     _init_img_resource();
+
+    connect( _image_viewer, &QImageView::loaded, this, &MainWindow::_im_show );
+
+    _rubber_band = new QRubberBand( QRubberBand::Rectangle, this );
 }
 //=======================================================================================
 MainWindow::~MainWindow()
@@ -253,5 +265,38 @@ void MainWindow::_init_img_viewer()
     auto* main_layout = new QGridLayout( this );
     main_layout->addWidget( image_scroll_area, 0, 0 );
     _central_widget->setLayout( main_layout );
+}
+//=======================================================================================
+
+static QPoint origin { 0, 0 };
+//=======================================================================================
+void MainWindow::mouseMoveEvent( QMouseEvent* event )
+{
+    _rubber_band->setGeometry( QRect( origin, event->pos() ) );
+}
+//=======================================================================================
+void MainWindow::mousePressEvent( QMouseEvent* event )
+{
+    origin = event->pos();
+
+    _rubber_band->setGeometry( QRect( origin, QSize() ) );
+    _rubber_band->show();
+}
+//=======================================================================================
+
+
+//=======================================================================================
+void MainWindow::_im_show( const QImage& src )
+{
+    auto tmp = src.convertToFormat( QImage::Format::Format_ARGB32 );
+
+    cv::Mat res( tmp.height(), tmp.width(), CV_8UC4,
+                 (void *)tmp.constBits(), tmp.bytesPerLine() );
+
+    cv::imshow( QApplication::applicationName().toStdString(), res );
+
+    auto key = cv::waitKey(10);
+
+    auto rect = cv::selectROI( QApplication::applicationName().toStdString(), res, false );
 }
 //=======================================================================================
