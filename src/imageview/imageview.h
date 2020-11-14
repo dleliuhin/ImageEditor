@@ -10,18 +10,18 @@
 
 //=======================================================================================
 
-class QImageView : public QWidget
+class ImageView : public QWidget
 {
     Q_OBJECT
 
 public:
 
-    explicit QImageView( QWidget* parent = nullptr );
-    explicit QImageView( QWidget* parent,
+    explicit ImageView( QWidget* parent = nullptr );
+    explicit ImageView( QWidget* parent,
                            const QString& caption,
                            const QString& dir,
                            const QString& filer );
-    virtual ~QImageView();
+    virtual ~ImageView();
 
     //-----------------------------------------------------------------------------------
 

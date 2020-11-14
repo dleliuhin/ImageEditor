@@ -15,13 +15,14 @@
 
 //=======================================================================================
 MainWindow::MainWindow( QWidget* parent )
-    : QMainWindow     ( parent                 )
-    , _menu_bar       ( new QMenuBar( this )   )
-    , _tool_bar       ( new QToolBar( this )   )
-    , _central_widget ( new QWidget( this )    )
-    , _status_bar     ( new QStatusBar( this ) )
-    , _image_label    ( new QLabel( this )     )
-    , _image_viewer   ( new QImageView()     )
+    : QMainWindow     ( parent                                          )
+    , _menu_bar       ( new QMenuBar( this )                            )
+    , _tool_bar       ( new QToolBar( this )                            )
+    , _central_widget ( new QWidget( this )                             )
+    , _status_bar     ( new QStatusBar( this )                          )
+    , _image_label    ( new QLabel( this )                              )
+    , _image_viewer   ( new ImageView()                                 )
+    , _rubber_band    ( new QRubberBand( QRubberBand::Rectangle, this ) )
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
@@ -36,8 +37,6 @@ MainWindow::MainWindow( QWidget* parent )
 
     /* init resource */
     _init_img_resource();
-
-    _rubber_band = new QRubberBand( QRubberBand::Rectangle, this );
 }
 //=======================================================================================
 MainWindow::~MainWindow()
@@ -51,13 +50,48 @@ MainWindow::~MainWindow()
 
     delete _action_open;
     delete _action_close;
-    delete _action_last;
-    delete _action_next;
     delete _action_to_left;
     delete _action_to_right;
     delete _action_to_enlarge;
     delete _action_to_lessen;
     delete _action_delete;
+
+    _rubber_band->close();
+
+    delete _rubber_band;
+
+    qDeleteAll( _regions );
+    _regions.clear();
+}
+//=======================================================================================
+
+
+//=======================================================================================
+void MainWindow::mouseMoveEvent( QMouseEvent* event )
+{
+    _rubber_band->setGeometry( { _last_pos, event->pos() } );
+}
+//=======================================================================================
+void MainWindow::mousePressEvent( QMouseEvent* event )
+{
+    _last_pos = event->pos();
+
+    _rubber_band->setGeometry( { _last_pos, QSize() } );
+    _rubber_band->show();
+
+    _selected = true;
+}
+//=======================================================================================
+void MainWindow::mouseReleaseEvent( QMouseEvent* event )
+{
+    qDebug() << _image_label->cursor().pos();
+
+    if ( _selected )
+        _regions.append( new Region( _image_viewer->image.copy( _last_pos.x(),
+                                                                _last_pos.y(),
+                                                                _rubber_band->width(),
+                                                                _rubber_band->height() ) ) );
+    _selected = false;
 }
 //=======================================================================================
 
@@ -66,8 +100,8 @@ MainWindow::~MainWindow()
 void MainWindow::opened()
 {
     auto ok = _image_viewer->open_img( "Select image:",
-                                            "$$PWD",
-                                            "Images (*.jpg *.jpeg *.png *.bmp *.gif)" );
+                                       "$$PWD",
+                                       "Images (*.jpg *.jpeg *.png *.bmp *.gif)" );
     if (ok)
     {
         QMessageBox::information( this, "Error", "Open a file failed!" );
@@ -203,8 +237,6 @@ void MainWindow::_init_window_componet()
 
     auto* operation_menu = _menu_bar->addMenu( "Operate" );
 
-    operation_menu->addAction( _action_last );
-    operation_menu->addAction( _action_next );
     operation_menu->addSeparator();
     operation_menu->addAction( _action_to_left );
     operation_menu->addAction( _action_to_right );
@@ -214,8 +246,6 @@ void MainWindow::_init_window_componet()
 
     _tool_bar->addAction( _action_open       );
     _tool_bar->addAction( _action_close      );
-    _tool_bar->addAction( _action_last       );
-    _tool_bar->addAction( _action_next       );
     _tool_bar->addAction( _action_to_left    );
     _tool_bar->addAction( _action_to_right   );
     _tool_bar->addAction( _action_to_enlarge );
@@ -235,7 +265,7 @@ void MainWindow::_init_window_componet()
 void MainWindow::_init_img_resource()
 {
     _image_label->clear();
-    _image_label->resize( QSize( 700, 400 ) );
+    _image_label->resize( QSize( 1280, 720 ) );
     setWindowTitle( "QImageViewer" );
 }
 //=======================================================================================
@@ -256,21 +286,5 @@ void MainWindow::_init_img_viewer()
     auto* main_layout = new QGridLayout( this );
     main_layout->addWidget( image_scroll_area, 0, 0 );
     _central_widget->setLayout( main_layout );
-}
-//=======================================================================================
-
-static QPoint origin { 0, 0 };
-//=======================================================================================
-void MainWindow::mouseMoveEvent( QMouseEvent* event )
-{
-    _rubber_band->setGeometry( QRect( origin, event->pos() ) );
-}
-//=======================================================================================
-void MainWindow::mousePressEvent( QMouseEvent* event )
-{
-    origin = event->pos();
-
-    _rubber_band->setGeometry( QRect( origin, QSize() ) );
-    _rubber_band->show();
 }
 //=======================================================================================

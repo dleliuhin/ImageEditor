@@ -1,4 +1,4 @@
-#include "qimageviewer.h"
+#include "imageview.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -6,24 +6,24 @@
 #include <QImageReader>
 
 //=======================================================================================
-QImageView::QImageView( QWidget* parent )
-    : QWidget ( parent )
+ImageView::ImageView( QWidget* parent )
+    : QWidget      ( parent                                          )    
 {
     this->parent = parent;
     _init_img();
 }
 //=======================================================================================
-QImageView::QImageView( QWidget* parent,
-                            const QString& caption,
-                            const QString& dir,
-                            const QString& filer )
+ImageView::ImageView( QWidget* parent,
+                        const QString& caption,
+                        const QString& dir,
+                        const QString& filer )
 {
     this->parent = parent;
     _init_img();
     _load_img( caption, dir, filer );
 }
 //=======================================================================================
-QImageView::~QImageView()
+ImageView::~ImageView()
 {
     this->parent = nullptr;
 }
@@ -31,21 +31,21 @@ QImageView::~QImageView()
 
 
 //=======================================================================================
-int QImageView::open_img( const QString& caption,
-                            const QString& dir,
-                            const QString& filer )
+int ImageView::open_img( const QString& caption,
+                          const QString& dir,
+                          const QString& filer )
 {
     _init_img();
     return _load_img( caption, dir, filer );
 }
 //=======================================================================================
-int QImageView::close_img()
+int ImageView::close_img()
 {
     _init_img();
-    return 0;
+    return EXIT_SUCCESS;
 }
 //=======================================================================================
-int QImageView::del_img()
+int ImageView::del_img()
 {
     if ( filename.isEmpty() ) return - 1;
 
@@ -55,25 +55,25 @@ int QImageView::del_img()
     else
     {
         qDebug() << "remove failed: " << filename;
-        return -1;
+        return - 1;
     }
 
     fileInfoList.removeAt( index );
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 //=======================================================================================
-int QImageView::zoom_in()
+int ImageView::zoom_in()
 {
     return _upgrade_file_info( filename, angle, 12 );
 }
 //=======================================================================================
-int QImageView::zoom_out()
+int ImageView::zoom_out()
 {
     return _upgrade_file_info( filename, angle, 8 );
 }
 //=======================================================================================
-int QImageView::rotato_to_right()
+int ImageView::rotato_to_right()
 {
     angle += 1;
     angle = angle % 4;
@@ -81,7 +81,7 @@ int QImageView::rotato_to_right()
     return _upgrade_file_info( filename, angle, 10 );
 }
 //=======================================================================================
-int QImageView::spin_to_left()
+int ImageView::spin_to_left()
 {
     angle += 3;
     angle = angle % 4;
@@ -92,9 +92,9 @@ int QImageView::spin_to_left()
 
 
 //=======================================================================================
-void QImageView::_init_img()
+void ImageView::_init_img()
 {
-    index = -1;
+    index = EXIT_FAILURE;
     angle = 0;
     size = QSize(0, 0);
 
@@ -102,23 +102,23 @@ void QImageView::_init_img()
     path.clear();
 }
 //=======================================================================================
-int QImageView::_load_img()
+int ImageView::_load_img()
 {
     filename = QFileDialog::getOpenFileName( this, "Select image:",
                                              "D:\\Documents\\Pictures",
                                              "Images (*.jpg *.jpeg *.png *.bmp *.gif)" );
-    if ( filename.isEmpty() ) return -1;
+    if ( filename.isEmpty() ) return EXIT_FAILURE;
 
     _get_files_info();
 
     _upgrade_file_info( filename, angle, 10 );
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 //=======================================================================================
-int QImageView::_load_img( const QString& caption,
-                             const QString& directory,
-                             const QString& filer )
+int ImageView::_load_img( const QString& caption,
+                           const QString& directory,
+                           const QString& filer )
 {
     filename = QFileDialog::getOpenFileName( this, caption, directory, filer );
     if ( filename.isEmpty() )
@@ -128,21 +128,21 @@ int QImageView::_load_img( const QString& caption,
 
     _upgrade_file_info( filename, angle, 10 );
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 //=======================================================================================
-int QImageView::_upgrade_file_info( const QString& filename,
-                                      const int angle,
-                                      const int scale )
+int ImageView::_upgrade_file_info( const QString& filename,
+                                    const int angle,
+                                    const int scale )
 {
     QImage img_rotate;
     QMatrix matrix;
     QImage img_scaled;
 
-    if ( filename.isEmpty() ) return -1;
+    if ( filename.isEmpty() ) return EXIT_FAILURE;
 
     file_info = QFileInfo( filename );
-    if ( !image.load( filename ) ) return -1;
+    if ( !image.load( filename ) ) return EXIT_FAILURE;
 
     if ( size == QSize(0, 0) )
         size = image.size();
@@ -150,8 +150,8 @@ int QImageView::_upgrade_file_info( const QString& filename,
     emit loaded( image );
 
     img_scaled = image.scaled( size.width() * scale / 10,
-                              size.height() * scale / 10,
-                              Qt::KeepAspectRatio );
+                               size.height() * scale / 10,
+                               Qt::KeepAspectRatio );
     if ( scale != 10 )
         size = img_scaled.size();
 
@@ -161,10 +161,10 @@ int QImageView::_upgrade_file_info( const QString& filename,
     pixmap = QPixmap::fromImage( img_rotate );
     index = _get_file_idx();
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 //=======================================================================================
-int QImageView::_get_files_info()
+int ImageView::_get_files_info()
 {
     QFileInfo info;
     QFileInfoList infoList;
@@ -180,39 +180,41 @@ int QImageView::_get_files_info()
         info = infoList.at(i);
         QString suffix = info.suffix();
 
-        if (suffix == "jpg" || suffix == "bmp" || suffix == "png"
-            || suffix == "gif" || suffix == "jpeg") {
-            fileInfoList.append(info);
-        }
+        if ( suffix == "jpg" || suffix == "bmp" || suffix == "png"
+             || suffix == "gif" || suffix == "jpeg")
+            fileInfoList.append( info );
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 //=======================================================================================
-int QImageView::_get_file_idx()
+int ImageView::_get_file_idx()
 {
     QFileInfo info;
     int j;
 
-    if (fileInfoList.count() <= 0) {
+    if ( fileInfoList.count() <= 0 )
+    {
         qDebug() << "fileInfoList is NULL!";
-        return -1;
+        return EXIT_FAILURE;
     }
 
-    for (j = 0; j < fileInfoList.count(); j++) {
+    for (j = 0; j < fileInfoList.count(); j++)
+    {
         info = fileInfoList.at(j);
-        if (info.fileName() == file_info.fileName()) {
+
+        if ( info.fileName() == file_info.fileName() )
             break;
-        }
     }
 
-    if (j >= fileInfoList.count()) {
+    if (j >= fileInfoList.count())
+    {
         qDebug() << "Not find current file!";
-        return -1;
+
+        return EXIT_FAILURE;
     }
 
     index = j;
-    //qDebug() << "Current fileInfo index: " << index;
 
     return index;
 }
