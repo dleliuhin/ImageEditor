@@ -73,9 +73,5 @@ private:
     void mouseMoveEvent( QMouseEvent* event );
     void mousePressEvent( QMouseEvent* event );
 
-private slots:
-
-    void _im_show( const QImage& src );
-
 };
 //=======================================================================================

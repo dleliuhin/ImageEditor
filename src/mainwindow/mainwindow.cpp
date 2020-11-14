@@ -13,13 +13,6 @@
 #include <QApplication>
 #include <QRect>
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/highgui.hpp>
-
-//=======================================================================================
-
-using namespace cv;
-
 //=======================================================================================
 MainWindow::MainWindow( QWidget* parent )
     : QMainWindow     ( parent                 )
@@ -43,8 +36,6 @@ MainWindow::MainWindow( QWidget* parent )
 
     /* init resource */
     _init_img_resource();
-
-    connect( _image_viewer, &QImageView::loaded, this, &MainWindow::_im_show );
 
     _rubber_band = new QRubberBand( QRubberBand::Rectangle, this );
 }
@@ -281,22 +272,5 @@ void MainWindow::mousePressEvent( QMouseEvent* event )
 
     _rubber_band->setGeometry( QRect( origin, QSize() ) );
     _rubber_band->show();
-}
-//=======================================================================================
-
-
-//=======================================================================================
-void MainWindow::_im_show( const QImage& src )
-{
-    auto tmp = src.convertToFormat( QImage::Format::Format_ARGB32 );
-
-    cv::Mat res( tmp.height(), tmp.width(), CV_8UC4,
-                 (void *)tmp.constBits(), tmp.bytesPerLine() );
-
-    cv::imshow( QApplication::applicationName().toStdString(), res );
-
-    auto key = cv::waitKey(10);
-
-    auto rect = cv::selectROI( QApplication::applicationName().toStdString(), res, false );
 }
 //=======================================================================================
