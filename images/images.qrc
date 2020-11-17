@@ -1,9 +1,8 @@
 <RCC>
-    <qresource prefix="/images/">
+    <qresource prefix="/images">
         <file>add.png</file>
         <file>clear.png</file>
         <file>close.png</file>
-        <file>help.png</file>
         <file>large.png</file>
         <file>left.png</file>
         <file>mesage.png</file>
