@@ -39,9 +39,9 @@ public slots:
 private:
 
     QMenuBar*    _menu_bar       { nullptr };
+    QStatusBar*  _status_bar     { nullptr };
     QToolBar*    _tool_bar       { nullptr };
     QWidget*     _central_widget { nullptr };
-    QStatusBar*  _status_bar     { nullptr };
 
     //-----------------------------------------------------------------------------------
 
