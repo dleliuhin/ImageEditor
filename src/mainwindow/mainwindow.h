@@ -39,7 +39,6 @@ public slots:
     void to_right();
     void to_large();
     void to_less();
-    void deleted();
 
     //-----------------------------------------------------------------------------------
 
@@ -67,7 +66,6 @@ private:
     QAction* _action_to_right   { nullptr };
     QAction* _action_to_enlarge { nullptr };
     QAction* _action_to_lessen  { nullptr };
-    QAction* _action_delete     { nullptr };
 
     //-----------------------------------------------------------------------------------
 

@@ -54,7 +54,6 @@ MainWindow::~MainWindow()
     delete _action_to_right;
     delete _action_to_enlarge;
     delete _action_to_lessen;
-    delete _action_delete;
 
     _rubber_band->close();
 
@@ -84,11 +83,9 @@ void MainWindow::mousePressEvent( QMouseEvent* event )
 //=======================================================================================
 void MainWindow::mouseReleaseEvent( QMouseEvent* event )
 {
-    qDebug() << _image_label->cursor().pos();
-
     if ( _selected )
-        _regions.append( new Region( _image_viewer->image.copy( _last_pos.x(),
-                                                                _last_pos.y(),
+        _regions.append( new Region( _image_viewer->image.copy( _last_pos.x() - 8,
+                                                                _last_pos.y() - 69,
                                                                 _rubber_band->width(),
                                                                 _rubber_band->height() ) ) );
     _selected = false;
@@ -144,7 +141,7 @@ void MainWindow::to_large()
     if ( _image_viewer->zoom_in() )
     {
         QMessageBox::information(this, "Error", "Open a image, please!");
-        return ;
+        return;
     }
 
     _load_img_resource();
@@ -155,35 +152,10 @@ void MainWindow::to_less()
     if ( _image_viewer->zoom_out() )
     {
         QMessageBox::information(this, "Error", "Open a image, please!");
-        return ;
+        return;
     }
 
     _load_img_resource();
-}
-//=======================================================================================
-void MainWindow::deleted()
-{
-    if (!QFile(_image_viewer->filename).exists())
-    {
-        QMessageBox::information(this, "Error", "Open a image, please!");
-        return ;
-    }
-
-    QMessageBox message(QMessageBox::Warning,
-                        "Warning",
-                        "Do you want to delete this image?",
-                        QMessageBox::Yes | QMessageBox::No );
-
-    if ( message.exec() == QMessageBox::No )
-        return;
-
-    if ( _image_viewer->del_img() )
-    {
-        QMessageBox::warning(this, "Error", "Delete a image failed!");
-        return ;
-    }
-
-    _init_img_resource();
 }
 //=======================================================================================
 
@@ -217,11 +189,6 @@ void MainWindow::_init_window_componet()
     _action_to_lessen->setStatusTip( "To Lessen." );
     _action_to_lessen->setIcon( QIcon( ":/images/small.png" ) );
 
-    _action_delete = new QAction( "Delete", this );
-    _action_delete->setStatusTip( "Delete a image" );
-    _action_delete->setIcon( QIcon( ":/images/clear.png" ) );
-    _action_delete->setShortcut( QKeySequence::Delete );
-
     auto* exit_action = new QAction( "Exit", this );
     exit_action->setStatusTip( "Exit" );
     exit_action->setIcon( QIcon( ":/images/quit.png" ) );
@@ -230,8 +197,6 @@ void MainWindow::_init_window_componet()
     auto* file_menu = _menu_bar->addMenu( "File" );
     file_menu->addAction( _action_open );
     file_menu->addAction( _action_close );
-    file_menu->addSeparator();
-    file_menu->addAction( _action_delete );
     file_menu->addSeparator();
     file_menu->addAction( exit_action );
 
@@ -250,7 +215,6 @@ void MainWindow::_init_window_componet()
     _tool_bar->addAction( _action_to_right   );
     _tool_bar->addAction( _action_to_enlarge );
     _tool_bar->addAction( _action_to_lessen  );
-    _tool_bar->addAction( _action_delete     );
 
     connect( _action_open,       &QAction::triggered, this, &MainWindow::opened   );
     connect( _action_close,      &QAction::triggered, this, &MainWindow::closed   );
@@ -258,7 +222,6 @@ void MainWindow::_init_window_componet()
     connect( _action_to_right,   &QAction::triggered, this, &MainWindow::to_right );
     connect( _action_to_enlarge, &QAction::triggered, this, &MainWindow::to_large );
     connect( _action_to_lessen,  &QAction::triggered, this, &MainWindow::to_less  );
-    connect( _action_delete,     &QAction::triggered, this, &MainWindow::deleted  );
     connect( exit_action,        &QAction::triggered, this, &MainWindow::closed   );
 }
 //=======================================================================================
