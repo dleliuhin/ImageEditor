@@ -25,12 +25,6 @@ public:
 
     //-----------------------------------------------------------------------------------
 
-    void mouseMoveEvent( QMouseEvent* event ) override;
-    void mousePressEvent( QMouseEvent* event ) override;
-    void mouseReleaseEvent( QMouseEvent* event ) override;
-
-    //-----------------------------------------------------------------------------------
-
 public slots:
 
     void opened();
@@ -48,15 +42,6 @@ private:
     QToolBar*    _tool_bar       { nullptr };
     QWidget*     _central_widget { nullptr };
     QStatusBar*  _status_bar     { nullptr };
-    QLabel*      _image_label    { nullptr };
-    ImageView*  _image_viewer    { nullptr };
-
-    QRubberBand* _rubber_band { nullptr };
-
-    QList<Region*> _regions;
-
-    QPoint _last_pos { 0, 0 };
-    bool _selected { false };
 
     //-----------------------------------------------------------------------------------
 

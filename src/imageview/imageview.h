@@ -27,7 +27,6 @@ public:
 
     QWidget* parent { nullptr };
 
-    int index {0};
     int angle {0};
 
     QSize size;
@@ -35,7 +34,6 @@ public:
     QString path;
     QDir dir;
     QFileInfo file_info;
-    QFileInfoList fileInfoList;
 
     QImage image;
     QPixmap pixmap;
@@ -44,17 +42,10 @@ public:
 
     int open_img( const QString& caption, const QString& dir, const QString& filer );
     int close_img();
-    int del_img();
     int zoom_in();
     int zoom_out();
-    int rotato_to_right();
+    int rotate_to_right();
     int spin_to_left();
-
-    //-----------------------------------------------------------------------------------
-
-signals:
-
-    void loaded( const QImage& src );
 
     //-----------------------------------------------------------------------------------
 
