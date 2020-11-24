@@ -42,6 +42,8 @@ private:
     QStatusBar*  _status_bar     { nullptr };
     QToolBar*    _tool_bar       { nullptr };
     QWidget*     _central_widget { nullptr };
+    QLabel*      _label          { nullptr };
+    ImageView*   _image_viewer   { nullptr };
 
     //-----------------------------------------------------------------------------------
 
@@ -57,7 +59,6 @@ private:
     void _init_img_viewer();
     void _init_window_componet();
     void _load_img_resource();
-    void _init_img_resource();
 
 };
 //=======================================================================================

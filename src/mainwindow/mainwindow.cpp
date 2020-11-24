@@ -20,9 +20,9 @@ MainWindow::MainWindow( QWidget* parent )
     , _tool_bar       ( new QToolBar( this )                            )
     , _central_widget ( new QWidget( this )                             )
     , _status_bar     ( new QStatusBar( this )                          )
-//    , _image_label    ( new QLabel( this )                              )
-//    , _image_viewer   ( new ImageView()                                 )
-//    , _rubber_band    ( new QRubberBand( QRubberBand::Rectangle, this ) )
+    , _image_viewer   ( new ImageView( this )                           )
+    //    , _image_label    ( new QLabel( this )                              )
+    //    , _rubber_band    ( new QRubberBand( QRubberBand::Rectangle, this ) )
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
@@ -35,9 +35,6 @@ MainWindow::MainWindow( QWidget* parent )
 
     /* image show widget */
     _init_img_viewer();
-
-    /* init resource */
-    _init_img_resource();
 }
 //=======================================================================================
 MainWindow::~MainWindow()
@@ -46,8 +43,7 @@ MainWindow::~MainWindow()
     delete _tool_bar;
     delete _central_widget;
     delete _status_bar;
-//    delete _image_label;
-//    delete _image_viewer;
+    delete _image_viewer;
 
     delete _action_open;
     delete _action_close;
@@ -61,66 +57,64 @@ MainWindow::~MainWindow()
 //=======================================================================================
 void MainWindow::opened()
 {
-//    auto ok = _image_viewer->open_img( "Select image:",
-//                                       "$$PWD",
-//                                       "Images (*.jpg *.jpeg *.png *.bmp *.gif)" );
-//    if (ok)
-//    {
-//        QMessageBox::information( this, "Error", "Open a file failed!" );
-//        return;
-//    }
-
-//    _load_img_resource();
+    auto ok = _image_viewer->open( "Select image:",
+                                   "$$PWD",
+                                   "Images (*.jpg *.jpeg *.png *.bmp *.gif)" );
+    if ( !ok )
+    {
+        QMessageBox::information( this, "Error", "Open a file failed!" );
+        return;
+    }
 }
 //=======================================================================================
 void MainWindow::closed()
 {
-//    _init_img_resource();
-//    _image_viewer->close_img();
+    //    _init_img_resource();
+    //    _image_viewer->close_img();
 }
 //=======================================================================================
 void MainWindow::to_left()
 {
-//    if ( _image_viewer->spin_to_left() )
-//    {
-//        QMessageBox::information(this, "Error", "Open a image, please!");
-//        return ;
-//    }
+    //    if ( _image_viewer->spin_to_left() )
+    //    {
+    //        QMessageBox::information(this, "Error", "Open a image, please!");
+    //        return ;
+    //    }
 
-//    _load_img_resource();
+    //    _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_right()
 {
-//    if ( _image_viewer->rotate_to_right() )
-//    {
-//        QMessageBox::information(this, "Error", "Open a image, please!");
-//        return ;
-//    }
+    //    if ( _image_viewer->rotate_to_right() )
+    //    {
+    //        QMessageBox::information(this, "Error", "Open a image, please!");
+    //        return ;
+    //    }
 
-//    _load_img_resource();
+    //    _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_large()
 {
-//    if ( _image_viewer->zoom_in() )
-//    {
-//        QMessageBox::information(this, "Error", "Open a image, please!");
-//        return;
-//    }
+    //    if ( _image_viewer->zoom_in() )
+    //    {
+    //        QMessageBox::information(this, "Error", "Open a image, please!");
+    //        return;
+    //    }
 
-//    _load_img_resource();
+    //    _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_less()
 {
-//    if ( _image_viewer->zoom_out() )
-//    {
-//        QMessageBox::information(this, "Error", "Open a image, please!");
-//        return;
-//    }
+    //    if ( _image_viewer->zoom_out() )
+    //    {
+    //        QMessageBox::information(this, "Error", "Open a image, please!");
+    //        return;
+    //    }
 
-//    _load_img_resource();
+    //    _load_img_resource();
 }
 //=======================================================================================
 
@@ -190,26 +184,12 @@ void MainWindow::_init_window_componet()
     connect( exit_action,        &QAction::triggered, this, &MainWindow::closed   );
 }
 //=======================================================================================
-void MainWindow::_init_img_resource()
-{
-//    _image_label->clear();
-//    _image_label->resize( QSize( 1280, 720 ) );
-//    setWindowTitle( "QImageViewer" );
-}
-//=======================================================================================
-//void MainWindow::_load_img_resource()
-//{
-//    _image_label->setPixmap( _image_viewer->pixmap );
-//    _image_label->resize( _image_viewer->size );
-//    setWindowTitle(QFileInfo( _image_viewer->filename ).fileName() + " - QImageViewer");
-//}
-//=======================================================================================
 void MainWindow::_init_img_viewer()
 {
     auto* image_scroll_area = new QScrollArea( this );
     image_scroll_area->setAlignment( Qt::AlignCenter );
     image_scroll_area->setFrameShape( QFrame::NoFrame );
-//    image_scroll_area->setWidget( _image_label );
+    image_scroll_area->setWidget( _image_viewer );
 
     auto* main_layout = new QGridLayout( this );
     main_layout->addWidget( image_scroll_area, 0, 0 );

@@ -9,7 +9,6 @@
 #include <QFileInfoList>
 
 //=======================================================================================
-
 class ImageView : public QWidget
 {
     Q_OBJECT
@@ -21,18 +20,29 @@ public:
 
     //-----------------------------------------------------------------------------------
 
+    QString fname;
     QImage image;
     QPixmap pixmap;
+    QSize size;
+    int angle {0};
 
     //-----------------------------------------------------------------------------------
 
-    int open_img( const QString& caption, const QString& dir, const QString& filer );
-    int zoom_in();
-    int zoom_out();
+    bool open( const QString& caption, const QString& dir, const QString& filter );
+    int zoom( const int scale );
     int to_right();
     int to_left();
-    int close_img();
+    int close();
+
+    //-----------------------------------------------------------------------------------
+
+    void _rotate( const int scale );
+
+    //-----------------------------------------------------------------------------------
+
+private slots:
+
+    void _changed();
 
 };
-
 //=======================================================================================
