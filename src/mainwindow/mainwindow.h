@@ -10,6 +10,7 @@
 #include <QFileInfoList>
 
 #include "qimageviewer.h"
+#include "customlabel.h"
 
 //=======================================================================================
 class MainWindow : public QMainWindow
@@ -43,7 +44,7 @@ private:
     QToolBar*     _tool_bar       { nullptr };
     QWidget*      _central_widget { nullptr };
     QStatusBar*   _status_bar     { nullptr };
-    QLabel*       _image_label    { nullptr };
+    CustomLabel*  _label          { nullptr };
     QImageViewer* _image_viewer   { nullptr };
 
     //-----------------------------------------------------------------------------------

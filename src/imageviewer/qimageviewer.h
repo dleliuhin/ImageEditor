@@ -9,12 +9,18 @@
 #include <QFileInfo>
 #include <QFileInfoList>
 
+//=======================================================================================
 class QImageViewer : public QWidget
 {
     Q_OBJECT
+
 public:
-    explicit QImageViewer(QWidget *parent = 0);
-    explicit QImageViewer(QWidget *parent,QString &caption,QString &dir,QString &filer);
+
+    explicit QImageViewer( QWidget *parent = 0 );
+    explicit QImageViewer( QWidget *parent,
+                           QString &caption,
+                           QString &dir,
+                           QString &filer );
     ~QImageViewer();
 
     QWidget *parent;
@@ -51,6 +57,7 @@ public:
     int spinToLeft(void);
 
 private:
+
     /* init param */
     void initImageResource(void);
 
@@ -62,8 +69,7 @@ private:
     int getFileInfoList(void);
     int getFileCurIndex(void);
     int upgradeFileInfo(QString &filename,int angle,int sizeScale);
-
-public slots:
 };
+//=======================================================================================
 
 #endif // QIMAGEVIEWER_H

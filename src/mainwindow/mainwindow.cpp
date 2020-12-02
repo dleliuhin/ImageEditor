@@ -19,7 +19,7 @@ MainWindow::MainWindow( QWidget* parent )
     , _tool_bar       ( new QToolBar( this )   )
     , _central_widget ( new QWidget( this )    )
     , _status_bar     ( new QStatusBar( this ) )
-    , _image_label    ( new QLabel( this )     )
+    , _label          ( new CustomLabel( this ))
     , _image_viewer   ( new QImageViewer()     )
 {
     setMenuBar( _menu_bar );
@@ -43,7 +43,7 @@ MainWindow::~MainWindow()
     delete _tool_bar;
     delete _central_widget;
     delete _status_bar;
-    delete _image_label;
+    delete _label;
     delete _image_viewer;
 
     delete _action_open;
@@ -71,7 +71,7 @@ void MainWindow::opened()
         return;
     }
 
-    loadImageResource();
+    load_img_resource();
 }
 //=======================================================================================
 void MainWindow::closed(void)
@@ -90,7 +90,7 @@ void MainWindow::last(void)
         return ;
     }
 
-    loadImageResource();
+    load_img_resource();
 }
 
 void MainWindow::next(void)
@@ -103,7 +103,7 @@ void MainWindow::next(void)
         return ;
     }
 
-    loadImageResource();
+    load_img_resource();
 }
 
 void MainWindow::to_left(void)
@@ -116,7 +116,7 @@ void MainWindow::to_left(void)
         return ;
     }
 
-    loadImageResource();
+    load_img_resource();
 }
 
 void MainWindow::to_right(void)
@@ -129,7 +129,7 @@ void MainWindow::to_right(void)
         return ;
     }
 
-    loadImageResource();
+    load_img_resource();
 }
 
 void MainWindow::to_large(void)
@@ -142,7 +142,7 @@ void MainWindow::to_large(void)
         return ;
     }
 
-    loadImageResource();
+    load_img_resource();
 }
 
 void MainWindow::to_less(void)
@@ -155,7 +155,7 @@ void MainWindow::to_less(void)
         return ;
     }
 
-    loadImageResource();
+    load_img_resource();
 }
 
 void MainWindow::deleted(void)
@@ -188,25 +188,24 @@ void MainWindow::deleted(void)
 }
 void MainWindow::initImageResource(void)
 {
-    _image_label->clear();
-    _image_label->resize(QSize(200, 100));
+    _label->clear();
+    _label->resize(QSize(200, 100));
     setWindowTitle(tr("QImageViewer"));
 }
 
-void MainWindow::loadImageResource()
+void MainWindow::load_img_resource()
 {
-    _image_label->setPixmap(_image_viewer->pixmap);
-    _image_label->resize(_image_viewer->size);
+    _label->setPixmap(_image_viewer->pixmap);
+    _label->resize(_image_viewer->size);
     setWindowTitle(QFileInfo(_image_viewer->filename).fileName() + tr(" - QImageViewer"));
 }
-
 
 void MainWindow::setQImageViewerWidget(void)
 {
     auto* imageScrollArea = new QScrollArea( this );
     imageScrollArea->setAlignment( Qt::AlignCenter );
     imageScrollArea->setFrameShape( QFrame::NoFrame );
-    imageScrollArea->setWidget( _image_label );
+    imageScrollArea->setWidget( _label );
 
     auto* mainLayout = new QGridLayout( this );
     mainLayout->addWidget( imageScrollArea, 0, 0 );
@@ -312,3 +311,4 @@ void MainWindow::setWindowComponet(void)
 
     connect(exitAction, SIGNAL(triggered(bool)), this, SLOT(closed()));
 }
+//=======================================================================================
