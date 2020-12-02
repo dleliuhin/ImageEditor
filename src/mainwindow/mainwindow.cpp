@@ -20,7 +20,7 @@ MainWindow::MainWindow( QWidget* parent )
     , _central_widget ( new QWidget( this )    )
     , _status_bar     ( new QStatusBar( this ) )
     , _label          ( new CustomLabel( this ))
-    , _image_viewer   ( new QImageViewer()     )
+    , _image_viewer   ( new ImageViewer( this ))
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
@@ -186,13 +186,44 @@ void MainWindow::deleted(void)
 
     initImageResource();
 }
-void MainWindow::initImageResource(void)
+//=======================================================================================
+
+
+//=======================================================================================
+void MainWindow::mouse_move( QMouseEvent* event )
+{}
+//=======================================================================================
+void MainWindow::mouse_press( QMouseEvent* event )
+{}
+//=======================================================================================
+void MainWindow::mouse_release( QMouseEvent* event )
+{}
+//=======================================================================================
+void MainWindow::region( const QPoint& pos, const QRubberBand& region )
+{
+//    _regions.append( new Region( _image_viewer->image.copy( _last_pos.x(),
+//                                                            _last_pos.y(),
+//                                                            _rubber_band->width(),
+//                                                            _rubber_band->height() ) ) );
+}
+//=======================================================================================
+
+
+//=======================================================================================
+void MainWindow::initImageResource()
 {
     _label->clear();
-    _label->resize(QSize(200, 100));
+    _label->resize(QSize(1200, 800));
     setWindowTitle(tr("QImageViewer"));
-}
 
+    connect( _label, &CustomLabel::mouse_move, this, &MainWindow::mouse_move );
+    connect( _label, &CustomLabel::mouse_press, this, &MainWindow::mouse_press );
+    connect( _label, &CustomLabel::mouse_release, this, &MainWindow::mouse_release );
+}
+//=======================================================================================
+
+
+//=======================================================================================
 void MainWindow::load_img_resource()
 {
     _label->setPixmap(_image_viewer->pixmap);
@@ -299,16 +330,16 @@ void MainWindow::setWindowComponet(void)
     _tool_bar->addAction(_action_delete);
     _tool_bar->addAction(about);
 
-    connect(_action_open, SIGNAL(triggered(bool)), this, SLOT(opened()));
-    connect(_action_close, SIGNAL(triggered(bool)), this, SLOT(closed()));
-    connect(_action_last, SIGNAL(triggered(bool)), this, SLOT(last()));
-    connect(_action_next, SIGNAL(triggered(bool)), this, SLOT(next()));
-    connect(_action_to_left, SIGNAL(triggered(bool)), this, SLOT(to_left()));
-    connect(_action_to_right, SIGNAL(triggered(bool)), this, SLOT(to_right()));
-    connect(_action_to_enlarge, SIGNAL(triggered(bool)), this, SLOT(to_large()));
-    connect(_action_to_lessen, SIGNAL(triggered(bool)), this, SLOT(to_less()));
-    connect(_action_delete, SIGNAL(triggered(bool)), this, SLOT(deleted()));
+    connect(_action_open, &QAction::triggered, this, &MainWindow::opened );
+    connect(_action_close, &QAction::triggered, this, &MainWindow::closed );
+    connect(_action_last, &QAction::triggered, this, &MainWindow::last );
+    connect(_action_next, &QAction::triggered, this, &MainWindow::next );
+    connect(_action_to_left, &QAction::triggered, this, &MainWindow::to_left );
+    connect(_action_to_right, &QAction::triggered, this, &MainWindow::to_right );
+    connect(_action_to_enlarge, &QAction::triggered, this, &MainWindow::to_large );
+    connect(_action_to_lessen, &QAction::triggered, this, &MainWindow::to_less );
+    connect(_action_delete, &QAction::triggered, this, &MainWindow::deleted );
 
-    connect(exitAction, SIGNAL(triggered(bool)), this, SLOT(closed()));
+    connect(exitAction, &QAction::triggered, this, &MainWindow::closed );
 }
 //=======================================================================================

@@ -1,4 +1,4 @@
-#include "qimageviewer.h"
+#include "imageviewer.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -6,24 +6,24 @@
 #include <QImageReader>
 
 //=======================================================================================
-QImageViewer::QImageViewer( QWidget* parent )
+ImageViewer::ImageViewer( QWidget* parent )
     : QWidget(parent)
 {
     this->parent = parent;
     initImageResource();
 }
 //=======================================================================================
-QImageViewer::QImageViewer( QWidget* parent,
-                            QString& caption,
-                            QString& dir,
-                            QString& filer )
+ImageViewer::ImageViewer( QWidget* parent,
+                          QString& caption,
+                          QString& dir,
+                          QString& filer )
 {
     this->parent = parent;
     initImageResource();
     loadImageResource(caption, dir, filer);
 }
 //=======================================================================================
-QImageViewer::~QImageViewer()
+ImageViewer::~ImageViewer()
 {
     this->parent = NULL;
 }
@@ -31,7 +31,7 @@ QImageViewer::~QImageViewer()
 
 
 //=======================================================================================
-int QImageViewer::openImageFile( const QString &caption,
+int ImageViewer::openImageFile( const QString &caption,
                                  const QString &dir,
                                  const QString &filer )
 {
@@ -39,13 +39,13 @@ int QImageViewer::openImageFile( const QString &caption,
     return loadImageResource(caption, dir, filer);
 }
 //=======================================================================================
-int QImageViewer::closeImageFile(void)
+int ImageViewer::closeImageFile(void)
 {
     initImageResource();
     return 0;
 }
 //=======================================================================================
-int QImageViewer::delImageFile(void)
+int ImageViewer::delImageFile(void)
 {
     if (filename.isEmpty()) {
         return -1;
@@ -64,7 +64,7 @@ int QImageViewer::delImageFile(void)
     return 0;
 }
 //=======================================================================================
-int QImageViewer::last(void)
+int ImageViewer::last(void)
 {
     if (index < 0) {
         return -1;
@@ -98,7 +98,7 @@ int QImageViewer::last(void)
     return upgradeFileInfo(filename, angle, 10);
 }
 //=======================================================================================
-int QImageViewer::next(void)
+int ImageViewer::next(void)
 {
     if (index < 0) {
         return -1;
@@ -132,17 +132,17 @@ int QImageViewer::next(void)
     return upgradeFileInfo(filename, angle, 10);
 }
 //=======================================================================================
-int QImageViewer::zoomIn(void)
+int ImageViewer::zoomIn(void)
 {
     return upgradeFileInfo(filename, angle, 12);
 }
 //=======================================================================================
-int QImageViewer::zoomOut(void)
+int ImageViewer::zoomOut(void)
 {
     return upgradeFileInfo(filename, angle, 8);
 }
 //=======================================================================================
-int QImageViewer::spinToRight(void)
+int ImageViewer::spinToRight(void)
 {
     angle += 1;
     angle = angle % 4;
@@ -151,7 +151,7 @@ int QImageViewer::spinToRight(void)
     return upgradeFileInfo(filename, angle, 10);
 }
 //=======================================================================================
-int QImageViewer::spinToLeft(void)
+int ImageViewer::spinToLeft(void)
 {
     angle += 3;
     angle = angle % 4;
@@ -160,7 +160,7 @@ int QImageViewer::spinToLeft(void)
     return upgradeFileInfo(filename, angle, 10);
 }
 //=======================================================================================
-void QImageViewer::initImageResource(void)
+void ImageViewer::initImageResource(void)
 {
     index = -1;
     angle = 0;
@@ -170,7 +170,7 @@ void QImageViewer::initImageResource(void)
     path.clear();
 }
 //=======================================================================================
-int QImageViewer::loadImageResource(void)
+int ImageViewer::loadImageResource(void)
 {
     //qDebug() << QImageReader::supportedImageFormats();
     filename = QFileDialog::getOpenFileName(this, tr("Select image:"),
@@ -188,7 +188,7 @@ int QImageViewer::loadImageResource(void)
     return 0;
 }
 //=======================================================================================
-int QImageViewer::loadImageResource(const QString &caption,
+int ImageViewer::loadImageResource(const QString &caption,
                                     const QString &directory,
                                     const QString &filer)
 {
@@ -206,7 +206,7 @@ int QImageViewer::loadImageResource(const QString &caption,
     return 0;
 }
 //=======================================================================================
-int QImageViewer::upgradeFileInfo(QString &filename,int angle,int sizeScale)
+int ImageViewer::upgradeFileInfo(QString &filename,int angle,int sizeScale)
 {
     QImage imgRotate;
     QMatrix matrix;
@@ -244,7 +244,7 @@ int QImageViewer::upgradeFileInfo(QString &filename,int angle,int sizeScale)
     return 0;
 }
 //=======================================================================================
-int QImageViewer::getFileInfoList(void)
+int ImageViewer::getFileInfoList(void)
 {
     QFileInfo info;
     QFileInfoList infoList;
@@ -269,7 +269,7 @@ int QImageViewer::getFileInfoList(void)
     return 0;
 }
 //=======================================================================================
-int QImageViewer::getFileCurIndex(void)
+int ImageViewer::getFileCurIndex(void)
 {
     QFileInfo info;
     int j;

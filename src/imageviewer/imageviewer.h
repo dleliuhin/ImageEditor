@@ -10,18 +10,18 @@
 #include <QFileInfoList>
 
 //=======================================================================================
-class QImageViewer : public QWidget
+class ImageViewer : public QWidget
 {
     Q_OBJECT
 
 public:
 
-    explicit QImageViewer( QWidget *parent = 0 );
-    explicit QImageViewer( QWidget *parent,
-                           QString &caption,
-                           QString &dir,
-                           QString &filer );
-    ~QImageViewer();
+    explicit ImageViewer( QWidget* parent = nullptr );
+    explicit ImageViewer( QWidget* parent,
+                          QString& caption,
+                          QString& dir,
+                          QString& filer );
+    ~ImageViewer();
 
     QWidget *parent;
 

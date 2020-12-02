@@ -9,7 +9,7 @@
 #include <QLabel>
 #include <QFileInfoList>
 
-#include "qimageviewer.h"
+#include "imageviewer.h"
 #include "customlabel.h"
 
 //=======================================================================================
@@ -38,6 +38,13 @@ public slots:
 
     //-----------------------------------------------------------------------------------
 
+    void mouse_move( QMouseEvent* event );
+    void mouse_press( QMouseEvent* event );
+    void mouse_release( QMouseEvent* event );
+    void region( const QPoint& pos, const QRubberBand& region );
+
+    //-----------------------------------------------------------------------------------
+
 private:
 
     QMenuBar*     _menu_bar       { nullptr };
@@ -45,7 +52,7 @@ private:
     QWidget*      _central_widget { nullptr };
     QStatusBar*   _status_bar     { nullptr };
     CustomLabel*  _label          { nullptr };
-    QImageViewer* _image_viewer   { nullptr };
+    ImageViewer* _image_viewer    { nullptr };
 
     //-----------------------------------------------------------------------------------
 
