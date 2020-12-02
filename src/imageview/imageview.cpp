@@ -9,7 +9,6 @@
 ImageView::ImageView( QWidget* parent )
     : QWidget ( parent )
 {
-    clear();
     resize( QSize( 1280, 800 ) );
     setWindowTitle( "QImageViewer" );
 }
@@ -80,6 +79,5 @@ void ImageView::_changed()
     pixmap = QPixmap::fromImage( image );
     resize( size );
     setWindowTitle( QFileInfo( fname ).fileName() );
-    show();
 }
 //=======================================================================================
