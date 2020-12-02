@@ -1,5 +1,8 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
+
+#include "imageview.h"
+#include "customlabel.h"
+#include "region.h"
 
 #include <QMainWindow>
 #include <QMenu>
@@ -8,9 +11,8 @@
 #include <QStatusBar>
 #include <QLabel>
 #include <QFileInfoList>
-
-#include "imageviewer.h"
-#include "customlabel.h"
+#include <QMouseEvent>
+#include <QRubberBand>
 
 //=======================================================================================
 class MainWindow : public QMainWindow
@@ -26,15 +28,12 @@ public:
 
 public slots:
 
-    void opened();
-    void closed();
-    void last();
-    void next();
+    void open();
+    void close();
     void to_left();
     void to_right();
     void to_large();
     void to_less();
-    void deleted();
 
     //-----------------------------------------------------------------------------------
 
@@ -47,33 +46,30 @@ public slots:
 
 private:
 
-    QMenuBar*     _menu_bar       { nullptr };
-    QToolBar*     _tool_bar       { nullptr };
-    QWidget*      _central_widget { nullptr };
-    QStatusBar*   _status_bar     { nullptr };
-    CustomLabel*  _label          { nullptr };
-    ImageViewer* _image_viewer    { nullptr };
+    QMenuBar*    _menu_bar       { nullptr };
+    QStatusBar*  _status_bar     { nullptr };
+    QToolBar*    _tool_bar       { nullptr };
+    QWidget*     _central_widget { nullptr };
+    CustomLabel*  _label         { nullptr };
+    ImageView*   _image_viewer   { nullptr };
+
+    QList<Region*> _regions;
 
     //-----------------------------------------------------------------------------------
 
     QAction* _action_open       { nullptr };
     QAction* _action_close      { nullptr };
-    QAction* _action_last       { nullptr };
-    QAction* _action_next       { nullptr };
     QAction* _action_to_left    { nullptr };
     QAction* _action_to_right   { nullptr };
     QAction* _action_to_enlarge { nullptr };
     QAction* _action_to_lessen  { nullptr };
-    QAction* _action_delete     { nullptr };
 
     //-----------------------------------------------------------------------------------
 
-    void setQImageViewerWidget();
-    void setWindowComponet();
-    void initImageResource();
-    void load_img_resource();
+    void _init_window_componet();
+    void _init_img_viewer();
+    void _init_img_resource();
+    void _load_img_resource();
 
 };
 //=======================================================================================
-
-#endif // MAINWINDOW_H
