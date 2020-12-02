@@ -13,6 +13,8 @@
 #include <QApplication>
 #include <QRect>
 
+//=======================================================================================
+
 static const QSize wsize( 1200, 800 );
 
 //=======================================================================================
@@ -75,25 +77,50 @@ void MainWindow::open()
 void MainWindow::close()
 {
     _init_img_resource();
+    _image_viewer->close();
 }
 //=======================================================================================
 void MainWindow::to_left()
 {
+    if ( !_image_viewer->to_left() )
+    {
+        QMessageBox::information( this, "Error", "Open a image, please!" );
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_right()
 {
+    if ( !_image_viewer->to_right() )
+    {
+        QMessageBox::information( this, "Error", "Open a image, please!" );
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_large()
 {
+    if ( !_image_viewer->zoom( 12 ) )
+    {
+        QMessageBox::information(this, "Error", "Open a image, please!");
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_less()
 {
+    if ( !_image_viewer->zoom( 8 ) )
+    {
+        QMessageBox::information(this, "Error", "Open a image, please!");
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================

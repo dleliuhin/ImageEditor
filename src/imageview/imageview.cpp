@@ -33,51 +33,72 @@ bool ImageView::open( const QString& caption,
 
     size = image.size();
 
-    _changed();
+    return _changed( angle, 10 );
+}
+//=======================================================================================
+bool ImageView::zoom( const int scale )
+{
+    return _changed( angle, scale );
+}
+//=======================================================================================
+bool ImageView::to_right()
+{
+    return _rotate(1);
+}
+//=======================================================================================
+bool ImageView::to_left()
+{
+    return _rotate(3);
+}
+//=======================================================================================
+bool ImageView::clear()
+{
+    angle = 0;
+    size = QSize(0, 0);
+    fname.clear();
+    image = {};
+
+//    _changed();
 
     return true;
 }
 //=======================================================================================
-int ImageView::zoom( const int scale )
-{
-    image = image.scaled( size.width() * scale / 10,
-                          size.height() * scale / 10,
-                          Qt::KeepAspectRatio );
-
-    _changed();
-}
-//=======================================================================================
-int ImageView::to_right()
-{
-    _rotate(1);
-}
-//=======================================================================================
-int ImageView::to_left()
-{
-    _rotate(3);
-}
-//=======================================================================================
 
 
 //=======================================================================================
-void ImageView::_rotate( const int scale )
+bool ImageView::_rotate( const int scale )
 {
+    angle += scale;
     angle = angle % 4;
 
-    QMatrix matrix;
-    matrix.rotate( angle * 90 );
-    image = image.transformed( matrix );
-
-    _changed();
+    return _changed( angle, 10 );
 }
 //=======================================================================================
 
 
 //=======================================================================================
-void ImageView::_changed()
+bool ImageView::_changed( const int& angle, const int& scale )
 {
-    pixmap = QPixmap::fromImage( image );
-    resize( size );
-    setWindowTitle( QFileInfo( fname ).fileName() );
+    QImage img_rotate;
+    QMatrix matrix;
+    QImage img_scaled;
+
+    if ( fname.isEmpty() ) return false;
+
+    if ( size == QSize(0, 0) ) size = image.size();
+
+    img_scaled = image.scaled( size.width() * scale / 10,
+                               size.height() * scale / 10,
+                               Qt::KeepAspectRatio );
+
+    if ( scale != 10 ) size = img_scaled.size();
+
+    matrix.rotate( angle * 90 );
+
+    img_rotate = img_scaled.transformed( matrix );
+
+    pixmap = QPixmap::fromImage( img_rotate );
+
+    return true;
 }
 //=======================================================================================

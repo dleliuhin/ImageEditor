@@ -29,20 +29,20 @@ public:
     //-----------------------------------------------------------------------------------
 
     bool open( const QString& caption, const QString& dir, const QString& filter );
-    int zoom( const int scale );
-    int to_right();
-    int to_left();
-    int close();
+    bool zoom( const int scale );
+    bool to_right();
+    bool to_left();
+    bool clear();
 
     //-----------------------------------------------------------------------------------
 
-    void _rotate( const int scale );
+    bool _rotate( const int scale );
 
     //-----------------------------------------------------------------------------------
 
 private slots:
 
-    void _changed();
+    bool _changed( const int& angle, const int& scale );
 
 };
 //=======================================================================================
