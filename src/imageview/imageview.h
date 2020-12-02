@@ -9,7 +9,6 @@
 #include <QFileInfoList>
 
 //=======================================================================================
-
 class ImageView : public QWidget
 {
     Q_OBJECT
@@ -17,56 +16,33 @@ class ImageView : public QWidget
 public:
 
     explicit ImageView( QWidget* parent = nullptr );
-    explicit ImageView( QWidget* parent,
-                           const QString& caption,
-                           const QString& dir,
-                           const QString& filer );
     virtual ~ImageView();
 
     //-----------------------------------------------------------------------------------
 
-    QWidget* parent { nullptr };
-
-    int index {0};
-    int angle {0};
-
-    QSize size;
-    QString filename;
-    QString path;
-    QDir dir;
-    QFileInfo file_info;
-    QFileInfoList fileInfoList;
-
+    QString fname;
     QImage image;
     QPixmap pixmap;
+    QSize size;
+    int angle {0};
 
     //-----------------------------------------------------------------------------------
 
-    int open_img( const QString& caption, const QString& dir, const QString& filer );
-    int close_img();
-    int del_img();
-    int zoom_in();
-    int zoom_out();
-    int rotato_to_right();
-    int spin_to_left();
+    bool open( const QString& caption, const QString& dir, const QString& filter );
+    int zoom( const int scale );
+    int to_right();
+    int to_left();
+    int close();
 
     //-----------------------------------------------------------------------------------
 
-signals:
-
-    void loaded( const QImage& src );
+    void _rotate( const int scale );
 
     //-----------------------------------------------------------------------------------
 
-private:
+private slots:
 
-    void _init_img();
-    int _load_img();
-    int _load_img( const QString& caption, const QString& dir, const QString& filer );
-    int _upgrade_file_info( const QString& filename, const int angle, const int scale );
-    int _get_files_info();
-    int _get_file_idx();
+    void _changed();
 
 };
-
 //=======================================================================================

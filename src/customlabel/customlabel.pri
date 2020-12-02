@@ -4,13 +4,7 @@ INCLUDEPATH += $$PWD
 
 #========================================================================================
 
-include( $$PWD/mainwindow/mainwindow.pri )
-include( $$PWD/customlabel/customlabel.pri )
-include( $$PWD/imageview/imageview.pri )
-include( $$PWD/region/region.pri )
-
-#========================================================================================
-
-SOURCES += $$PWD/main.cpp
+HEADERS += $$files( $$PWD/*.h   )
+SOURCES += $$files( $$PWD/*.cpp )
 
 #========================================================================================
