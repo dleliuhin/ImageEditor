@@ -5,6 +5,8 @@
 #include <QLabel>
 #include <QImage>
 #include <QPixmap>
+#include <QToolBar>
+#include <QBoxLayout>
 
 //=======================================================================================
 class Region : public QWidget
@@ -18,11 +20,19 @@ public:
 
     //-----------------------------------------------------------------------------------
 
+    QImage get();
+
+    //-----------------------------------------------------------------------------------
+
 private:
 
-    QLabel* _label  { nullptr };
+    QBoxLayout* _layout { nullptr };
+    QToolBar* _tool_bar { nullptr };
+    QLabel*   _label    { nullptr };
+
     QPixmap _pixmap;
     QImage  _image;
 
+    QSize size;
 };
 //=======================================================================================
