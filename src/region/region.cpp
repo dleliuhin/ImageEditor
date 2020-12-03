@@ -10,6 +10,10 @@ Region::Region( const QImage& img, QWidget* parent )
 
     resize( _image.width(), _image.height() );
 
+    static uint reg_count {1};
+
+    setWindowTitle( "Subregion" + QString::number( reg_count++ ) );
+
     show();
     _label->show();
 }

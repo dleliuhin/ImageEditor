@@ -14,11 +14,12 @@ CustomLabel::~CustomLabel()
 //=======================================================================================
 
 
-#include <QDebug>
 //=======================================================================================
 void CustomLabel::mouseMoveEvent( QMouseEvent* event )
 {
     _rubber_band->setGeometry( { _last_pos, event->pos() } );
+
+    emit mouse_move( event );
 }
 //=======================================================================================
 void CustomLabel::mousePressEvent( QMouseEvent* event )
@@ -29,6 +30,8 @@ void CustomLabel::mousePressEvent( QMouseEvent* event )
     _rubber_band->show();
 
     _selected = true;
+
+    emit mouse_press( event );
 }
 //=======================================================================================
 void CustomLabel::mouseReleaseEvent( QMouseEvent* event )
@@ -36,5 +39,7 @@ void CustomLabel::mouseReleaseEvent( QMouseEvent* event )
     if ( _selected ) emit region( _last_pos, *_rubber_band );
 
     _selected = false;
+
+    emit mouse_release( event );
 }
 //=======================================================================================

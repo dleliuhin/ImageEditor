@@ -13,6 +13,8 @@
 #include <QApplication>
 #include <QRect>
 
+//=======================================================================================
+
 static const QSize wsize( 1200, 800 );
 
 //=======================================================================================
@@ -23,7 +25,7 @@ MainWindow::MainWindow( QWidget* parent )
     , _tool_bar       ( new QToolBar    ( this ) )
     , _central_widget ( new QWidget     ( this ) )
     , _label          ( new CustomLabel ( this ) )
-    , _image_viewer   ( new ImageView   ()       )
+    , _image_viewer   ( new ImageView()          )
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
@@ -34,6 +36,7 @@ MainWindow::MainWindow( QWidget* parent )
     _init_window_componet();
     _init_img_viewer();
     _init_img_resource();
+    _init_connections();
 }
 //=======================================================================================
 MainWindow::~MainWindow()
@@ -52,8 +55,7 @@ MainWindow::~MainWindow()
     delete _action_to_enlarge;
     delete _action_to_lessen;
 
-    qDeleteAll( _regions );
-    _regions.clear();
+    close();
 }
 //=======================================================================================
 
@@ -75,25 +77,56 @@ void MainWindow::open()
 void MainWindow::close()
 {
     _init_img_resource();
+    _image_viewer->close();
+
+    for ( auto& r: _regions )
+        r->close();
+
+    qDeleteAll( _regions );
+    _regions.clear();
 }
 //=======================================================================================
 void MainWindow::to_left()
 {
+    if ( !_image_viewer->to_left() )
+    {
+        QMessageBox::information( this, "Error", "Open a image, please!" );
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_right()
 {
+    if ( !_image_viewer->to_right() )
+    {
+        QMessageBox::information( this, "Error", "Open a image, please!" );
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_large()
 {
+    if ( !_image_viewer->zoom( 12 ) )
+    {
+        QMessageBox::information(this, "Error", "Open a image, please!");
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_less()
 {
+    if ( !_image_viewer->zoom( 8 ) )
+    {
+        QMessageBox::information(this, "Error", "Open a image, please!");
+        return;
+    }
+
     _load_img_resource();
 }
 //=======================================================================================
@@ -111,10 +144,10 @@ void MainWindow::mouse_release( QMouseEvent* event )
 //=======================================================================================
 void MainWindow::region( const QPoint& pos, const QRubberBand& region )
 {
-    //    _regions.append( new Region( _image_viewer->image.copy( _last_pos.x(),
-    //                                                            _last_pos.y(),
-    //                                                            _rubber_band->width(),
-    //                                                            _rubber_band->height() ) ) );
+    _regions.append( new Region( _image_viewer->image.copy( pos.x(),
+                                                            pos.y(),
+                                                            region.width(),
+                                                            region.height() ) ) );
 }
 //=======================================================================================
 
@@ -232,5 +265,13 @@ void MainWindow::_load_img_resource()
     _label->setPixmap( _image_viewer->pixmap );
     _label->resize( _image_viewer->size );
     setWindowTitle( QFileInfo( _image_viewer->fname ).fileName() + " - Image" );
+}
+//=======================================================================================
+void MainWindow::_init_connections()
+{
+    connect( _label, &CustomLabel::mouse_move, this, &MainWindow::mouse_move );
+    connect( _label, &CustomLabel::mouse_press, this, &MainWindow::mouse_press );
+    connect( _label, &CustomLabel::mouse_release, this, &MainWindow::mouse_release );
+    connect( _label, &CustomLabel::region, this, &MainWindow::region );
 }
 //=======================================================================================
