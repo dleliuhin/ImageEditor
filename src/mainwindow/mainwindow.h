@@ -70,6 +70,7 @@ private:
     void _init_img_viewer();
     void _init_img_resource();
     void _load_img_resource();
+    void _init_connections();
 
 };
 //=======================================================================================
