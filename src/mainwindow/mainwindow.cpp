@@ -41,6 +41,8 @@ MainWindow::MainWindow( QWidget* parent )
 //=======================================================================================
 MainWindow::~MainWindow()
 {
+    close();
+
     delete _menu_bar;
     delete _tool_bar;
     delete _central_widget;
@@ -55,9 +57,10 @@ MainWindow::~MainWindow()
     delete _action_to_enlarge;
     delete _action_to_lessen;
 
-    close();
+    QApplication::closeAllWindows();
 }
 //=======================================================================================
+
 
 //=======================================================================================
 void MainWindow::open()
@@ -163,10 +166,10 @@ void MainWindow::mouse_wheel(QWheelEvent* event)
 //=======================================================================================
 void MainWindow::region( const QPoint& pos, const QRubberBand& region )
 {
-//    _regions.append( new Region( _image_viewer->image.copy( pos.x(),
-//                                                            pos.y(),
-//                                                            region.width(),
-    //                                                            region.height() ) ) );
+    _regions.append( new Region( _image_viewer->image.copy( pos.x(),
+                                                            pos.y(),
+                                                            region.width(),
+                                                            region.height() ) ) );
 }
 //=======================================================================================
 

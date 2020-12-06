@@ -26,8 +26,8 @@ public:
 
 private:
 
-    QBoxLayout* _layout { nullptr };
     QToolBar* _tool_bar { nullptr };
+    QBoxLayout* _layout { nullptr };
     QLabel*   _label    { nullptr };
 
     QPixmap _pixmap;
