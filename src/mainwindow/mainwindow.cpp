@@ -142,12 +142,31 @@ void MainWindow::mouse_press( QMouseEvent* event )
 void MainWindow::mouse_release( QMouseEvent* event )
 {}
 //=======================================================================================
+void MainWindow::mouse_wheel(QWheelEvent* event)
+{
+    bool ok { false };
+
+    if ( event->delta() > 0 )
+        ok = _image_viewer->zoom(12);
+
+    else
+        ok = _image_viewer->zoom(8);
+
+    if ( !ok )
+    {
+        QMessageBox::information(this, "Error", "Open a image, please!");
+        return;
+    }
+
+    _load_img_resource();
+}
+//=======================================================================================
 void MainWindow::region( const QPoint& pos, const QRubberBand& region )
 {
-    _regions.append( new Region( _image_viewer->image.copy( pos.x(),
-                                                            pos.y(),
-                                                            region.width(),
-                                                            region.height() ) ) );
+//    _regions.append( new Region( _image_viewer->image.copy( pos.x(),
+//                                                            pos.y(),
+//                                                            region.width(),
+    //                                                            region.height() ) ) );
 }
 //=======================================================================================
 
@@ -272,6 +291,7 @@ void MainWindow::_init_connections()
     connect( _label, &CustomLabel::mouse_move, this, &MainWindow::mouse_move );
     connect( _label, &CustomLabel::mouse_press, this, &MainWindow::mouse_press );
     connect( _label, &CustomLabel::mouse_release, this, &MainWindow::mouse_release );
+    connect( _label, &CustomLabel::mouse_wheel, this, &MainWindow::mouse_wheel );
     connect( _label, &CustomLabel::region, this, &MainWindow::region );
 }
 //=======================================================================================

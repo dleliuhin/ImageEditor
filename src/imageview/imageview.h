@@ -7,6 +7,7 @@
 #include <QSize>
 #include <QFileInfo>
 #include <QFileInfoList>
+#include <QWheelEvent>
 
 //=======================================================================================
 class ImageView : public QWidget
@@ -36,12 +37,13 @@ public:
 
     //-----------------------------------------------------------------------------------
 
-    bool _rotate( const int scale );
+    void wheelEvent( QWheelEvent* event ) override;
 
     //-----------------------------------------------------------------------------------
 
 private slots:
 
+    bool _rotate( const int scale );
     bool _changed( const int& angle, const int& scale );
 
 };

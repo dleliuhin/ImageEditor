@@ -1,5 +1,8 @@
 #include "customlabel.h"
 
+#include <QApplication>
+#include <QDebug>
+
 //=======================================================================================
 CustomLabel::CustomLabel( QWidget* parent )
     : QLabel       ( parent                                          )
@@ -41,5 +44,11 @@ void CustomLabel::mouseReleaseEvent( QMouseEvent* event )
     _selected = false;
 
     emit mouse_release( event );
+}
+//=======================================================================================
+void CustomLabel::wheelEvent( QWheelEvent* event )
+{
+    if ( QApplication::keyboardModifiers() == Qt::ControlModifier )
+        emit mouse_wheel( event );
 }
 //=======================================================================================
