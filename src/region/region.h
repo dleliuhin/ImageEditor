@@ -7,6 +7,7 @@
 #include <QPixmap>
 #include <QToolBar>
 #include <QBoxLayout>
+#include <QScrollArea>
 
 //=======================================================================================
 class Region : public QWidget
@@ -26,13 +27,15 @@ public:
 
 private:
 
+    QScrollArea* _scroll_area { nullptr };
+    QGridLayout* _grid_layout { nullptr };
     QToolBar* _tool_bar { nullptr };
-    QBoxLayout* _layout { nullptr };
     QLabel*   _label    { nullptr };
 
     QPixmap _pixmap;
     QImage  _image;
 
-    QSize size;
+    QSize _size;
+
 };
 //=======================================================================================

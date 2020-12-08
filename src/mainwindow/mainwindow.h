@@ -64,6 +64,7 @@ private:
     QAction* _action_to_right   { nullptr };
     QAction* _action_to_enlarge { nullptr };
     QAction* _action_to_lessen  { nullptr };
+    QAction* _action_polygon    { nullptr };
 
     //-----------------------------------------------------------------------------------
 

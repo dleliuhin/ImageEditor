@@ -56,6 +56,7 @@ MainWindow::~MainWindow()
     delete _action_to_right;
     delete _action_to_enlarge;
     delete _action_to_lessen;
+    delete _action_polygon;
 
     QApplication::closeAllWindows();
 }
@@ -215,6 +216,12 @@ void MainWindow::_init_window_componet()
 
     //-----------------------------------------------------------------------------------
 
+    _action_polygon = new QAction( "Polygon", this );
+    _action_polygon->setStatusTip( "Polygon." );
+    _action_polygon->setIcon( QIcon( ":/images/polygon.png" ) );
+
+    //-----------------------------------------------------------------------------------
+
     auto* exit_action = new QAction( "Exit", this );
 
     exit_action->setStatusTip( "Exit" );
@@ -240,6 +247,7 @@ void MainWindow::_init_window_componet()
     operation_menu->addSeparator();
     operation_menu->addAction( _action_to_enlarge );
     operation_menu->addAction( _action_to_lessen  );
+    operation_menu->addAction( _action_polygon );
 
     //-----------------------------------------------------------------------------------
 
@@ -249,6 +257,7 @@ void MainWindow::_init_window_componet()
     _tool_bar->addAction( _action_to_right   );
     _tool_bar->addAction( _action_to_enlarge );
     _tool_bar->addAction( _action_to_lessen  );
+    _tool_bar->addAction( _action_polygon     );
 
     //-----------------------------------------------------------------------------------
 
@@ -258,6 +267,7 @@ void MainWindow::_init_window_componet()
     connect( _action_to_right,   &QAction::triggered, this, &MainWindow::to_right );
     connect( _action_to_enlarge, &QAction::triggered, this, &MainWindow::to_large );
     connect( _action_to_lessen,  &QAction::triggered, this, &MainWindow::to_less  );
+    connect( _action_polygon,    &QAction::triggered, [ this ]{ _label->activate(); } );
     connect( exit_action,        &QAction::triggered, this, &MainWindow::close    );
 }
 //=======================================================================================
