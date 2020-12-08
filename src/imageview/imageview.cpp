@@ -36,6 +36,15 @@ bool ImageView::open( const QString& caption,
     return _changed( angle, 10 );
 }
 //=======================================================================================
+bool ImageView::set( const QImage& src )
+{
+    image = src;
+
+    size = image.size();
+
+    return _changed( angle, 10 );
+}
+//=======================================================================================
 bool ImageView::zoom( const int scale )
 {
     return _changed( angle, scale );

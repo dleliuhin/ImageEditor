@@ -30,6 +30,7 @@ public:
     //-----------------------------------------------------------------------------------
 
     bool open( const QString& caption, const QString& dir, const QString& filter );
+    bool set( const QImage& src );
     bool zoom( const int scale );
     bool to_right();
     bool to_left();

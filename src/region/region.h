@@ -1,5 +1,7 @@
 #pragma once
 
+#include "imageview.h"
+
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
@@ -8,16 +10,19 @@
 #include <QToolBar>
 #include <QBoxLayout>
 #include <QScrollArea>
+#include <QMainWindow>
+#include <QMenuBar>
+#include <QStatusBar>
 
 //=======================================================================================
-class Region : public QWidget
+class Region : public QMainWindow
 {
     Q_OBJECT
 
 public:
 
     explicit Region( const QImage& img,  QWidget* parent = nullptr );
-    virtual ~Region();
+    virtual ~Region() override;
 
     //-----------------------------------------------------------------------------------
 
@@ -27,10 +32,19 @@ public:
 
 private:
 
-    QScrollArea* _scroll_area { nullptr };
-    QGridLayout* _grid_layout { nullptr };
-    QToolBar* _tool_bar { nullptr };
-    QLabel*   _label    { nullptr };
+    QMenuBar* _menu_bar     { nullptr };
+    QToolBar* _tool_bar     { nullptr };
+    QWidget*  _central      { nullptr };
+    QStatusBar* _status_bar { nullptr };
+    QLabel*   _label        { nullptr };
+    ImageView*_image_viewer { nullptr };
+
+    //-----------------------------------------------------------------------------------
+
+    QAction* _action_polygon { nullptr };
+    QAction* _action_pallete { nullptr };
+
+    //-----------------------------------------------------------------------------------
 
     QPixmap _pixmap;
     QImage  _image;
