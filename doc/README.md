@@ -5,9 +5,9 @@ It is planned to be used only in the Windows OS.
 (Source code is the deliverable)
 
 
- 1. We should be able to open any image (bmp/png/jpg/jpeg)
+ 1. <s>We should be able to open any image (bmp/png/jpg/jpeg)</s>
 
- 2. We should be able to zoom into any rectangular subregion of the image. The plan is to open the zoomed area in a new    window. As long as it is done serially one after the other; we should be able to zoom into multiple subregions and make edits.
+ 2. <s>We should be able to zoom into any rectangular subregion of the image. The plan is to open the zoomed area in a new window.</s> As long as it is done serially one after the other; we should be able to zoom into multiple subregions and make edits.
 
 3. In this zoomed subregion; we should be able to draw and fill polygons with any color (Although only polygons are required as of now; lines could be required in the future - so we need to make plans for that).
 

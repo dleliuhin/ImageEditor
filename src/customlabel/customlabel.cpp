@@ -1,5 +1,8 @@
 #include "customlabel.h"
 
+#include <QApplication>
+#include <QDebug>
+
 //=======================================================================================
 CustomLabel::CustomLabel( QWidget* parent )
     : QLabel       ( parent                                          )
@@ -17,6 +20,8 @@ CustomLabel::~CustomLabel()
 //=======================================================================================
 void CustomLabel::mouseMoveEvent( QMouseEvent* event )
 {
+    if ( !_active ) return;
+
     _rubber_band->setGeometry( { _last_pos, event->pos() } );
 
     emit mouse_move( event );
@@ -24,6 +29,8 @@ void CustomLabel::mouseMoveEvent( QMouseEvent* event )
 //=======================================================================================
 void CustomLabel::mousePressEvent( QMouseEvent* event )
 {
+    if ( !_active ) return;
+
     _last_pos = event->pos();
 
     _rubber_band->setGeometry( { _last_pos, QSize() } );
@@ -36,10 +43,28 @@ void CustomLabel::mousePressEvent( QMouseEvent* event )
 //=======================================================================================
 void CustomLabel::mouseReleaseEvent( QMouseEvent* event )
 {
+    if ( !_active ) return;
+
     if ( _selected ) emit region( _last_pos, *_rubber_band );
 
     _selected = false;
 
     emit mouse_release( event );
+}
+//=======================================================================================
+void CustomLabel::wheelEvent( QWheelEvent* event )
+{
+    if ( !_active ) return;
+
+    if ( QApplication::keyboardModifiers() == Qt::ControlModifier )
+        emit mouse_wheel( event );
+}
+//=======================================================================================
+
+
+//=======================================================================================
+void CustomLabel::activate()
+{
+    _active = !_active;
 }
 //=======================================================================================

@@ -7,10 +7,6 @@ TARGET = ImageEditor
 QT += widgets
 QT += gui
 
-CONFIG += c++17
-
-DEFINES += QT_DEPRECATED_WARNINGS
-
 #========================================================================================
 
 MAIN_DIR = $$PWD

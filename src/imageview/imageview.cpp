@@ -36,6 +36,15 @@ bool ImageView::open( const QString& caption,
     return _changed( angle, 10 );
 }
 //=======================================================================================
+bool ImageView::set( const QImage& src )
+{
+    image = src;
+
+    size = image.size();
+
+    return _changed( angle, 10 );
+}
+//=======================================================================================
 bool ImageView::zoom( const int scale )
 {
     return _changed( angle, scale );
@@ -57,8 +66,6 @@ bool ImageView::clear()
     size = QSize(0, 0);
     fname.clear();
     image = {};
-
-//    _changed();
 
     return true;
 }
@@ -82,8 +89,6 @@ bool ImageView::_changed( const int& angle, const int& scale )
     QImage img_rotate;
     QMatrix matrix;
     QImage img_scaled;
-
-    if ( fname.isEmpty() ) return false;
 
     if ( size == QSize(0, 0) ) size = image.size();
 
