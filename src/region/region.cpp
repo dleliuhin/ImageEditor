@@ -9,6 +9,7 @@ Region::Region( const QImage& img, QWidget* parent )
     , _menu_bar     ( new QMenuBar( this ) )
     , _tool_bar     ( new QToolBar( this ) )
     , _status_bar   ( new QStatusBar( this ) )
+    , _central      ( new QWidget( this )  )
     , _label        ( new QLabel( this )   )
     , _image_viewer ( new ImageView()      )
     , _image        ( img                  )
@@ -44,21 +45,21 @@ Region::Region( const QImage& img, QWidget* parent )
 
     //-----------------------------------------------------------------------------------
 
-//    auto* image_scroll_area = new QScrollArea( this );
+    auto* image_scroll_area = new QScrollArea( this );
 
-//    image_scroll_area->setAlignment( Qt::AlignCenter );
-//    image_scroll_area->setFrameShape( QFrame::NoFrame );
-//    image_scroll_area->setWidget( _label );
+    image_scroll_area->setAlignment( Qt::AlignCenter );
+    image_scroll_area->setFrameShape( QFrame::NoFrame );
+    image_scroll_area->setWidget( _label );
 
-//    auto* main_layout = new QGridLayout( this );
+    auto* main_layout = new QGridLayout( this );
 
-//    main_layout->addWidget( image_scroll_area, 0, 0 );
-//    _central->setLayout( main_layout );
+    main_layout->addWidget( image_scroll_area, 0, 0 );
+    _central->setLayout( main_layout );
 
     //-----------------------------------------------------------------------------------
 
-//    _label->setPixmap( _image_viewer->pixmap );
-//    _label->resize( _size );
+    _label->setPixmap( _image_viewer->pixmap );
+    _label->resize( _size );
 
     static uint reg_count {1};
     setWindowTitle( "Subregion" + QString::number( reg_count++ ) );
