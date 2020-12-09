@@ -1,6 +1,7 @@
 #pragma once
 
 #include "imageview.h"
+#include "customlabel.h"
 
 #include <QObject>
 #include <QWidget>
@@ -36,7 +37,7 @@ private:
     QToolBar* _tool_bar     { nullptr };
     QWidget*  _central      { nullptr };
     QStatusBar* _status_bar { nullptr };
-    QLabel*   _label        { nullptr };
+    CustomLabel*   _label   { nullptr };
     ImageView*_image_viewer { nullptr };
 
     //-----------------------------------------------------------------------------------

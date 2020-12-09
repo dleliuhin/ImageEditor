@@ -73,15 +73,6 @@ bool ImageView::clear()
 
 
 //=======================================================================================
-void ImageView::wheelEvent( QWheelEvent* event )
-{
-//    _changed( angle, event->delta() / 120 );
-//    qDebug() << "Wheel event";
-}
-//=======================================================================================
-
-
-//=======================================================================================
 bool ImageView::_rotate( const int scale )
 {
     angle += scale;
@@ -98,8 +89,6 @@ bool ImageView::_changed( const int& angle, const int& scale )
     QImage img_rotate;
     QMatrix matrix;
     QImage img_scaled;
-
-    if ( fname.isEmpty() ) return false;
 
     if ( size == QSize(0, 0) ) size = image.size();
 

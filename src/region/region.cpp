@@ -4,13 +4,17 @@
 #include <QDebug>
 
 //=======================================================================================
+
+static uint reg_count {1};
+
+//=======================================================================================
 Region::Region( const QImage& img, QWidget* parent )
     : QMainWindow   ( parent               )
     , _menu_bar     ( new QMenuBar( this ) )
     , _tool_bar     ( new QToolBar( this ) )
-    , _status_bar   ( new QStatusBar( this ) )
     , _central      ( new QWidget( this )  )
-    , _label        ( new QLabel( this )   )
+    , _status_bar   ( new QStatusBar( this ) )
+    , _label        ( new CustomLabel( this ) )
     , _image_viewer ( new ImageView()      )
     , _image        ( img                  )
 {
@@ -20,9 +24,9 @@ Region::Region( const QImage& img, QWidget* parent )
     setCentralWidget( _central );
     setStatusBar( _status_bar );
 
-    _image_viewer->set( img );
-
     _size = img.size() * 2;
+
+    _image_viewer->set( img.scaled( _size, Qt::KeepAspectRatio ) );
 
     resize( _size );
 
@@ -58,10 +62,12 @@ Region::Region( const QImage& img, QWidget* parent )
 
     //-----------------------------------------------------------------------------------
 
+    _label->clear();
     _label->setPixmap( _image_viewer->pixmap );
-    _label->resize( _size );
+    _label->resize( _image_viewer->size );
 
-    static uint reg_count {1};
+    //-----------------------------------------------------------------------------------
+
     setWindowTitle( "Subregion" + QString::number( reg_count++ ) );
 
     show();
@@ -69,6 +75,8 @@ Region::Region( const QImage& img, QWidget* parent )
 //=======================================================================================
 Region::~Region()
 {
+    reg_count--;
+
     delete _tool_bar;
     delete _central;
     delete _label;
