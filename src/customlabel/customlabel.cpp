@@ -4,9 +4,10 @@
 #include <QDebug>
 
 //=======================================================================================
-CustomLabel::CustomLabel( QWidget* parent )
+CustomLabel::CustomLabel( const Mode mode, QWidget* parent )
     : QLabel       ( parent                                          )
     , _rubber_band ( new QRubberBand( QRubberBand::Rectangle, this ) )
+    , _mode        ( mode                                            )
 {}
 //=======================================================================================
 CustomLabel::~CustomLabel()
@@ -22,7 +23,8 @@ void CustomLabel::mouseMoveEvent( QMouseEvent* event )
 {
     if ( !_active ) return;
 
-    _rubber_band->setGeometry( { _last_pos, event->pos() } );
+    if ( _mode == Mode::RUBBER )
+        _rubber_band->setGeometry( { _last_pos, event->pos() } );
 
     emit mouse_move( event );
 }
@@ -31,12 +33,21 @@ void CustomLabel::mousePressEvent( QMouseEvent* event )
 {
     if ( !_active ) return;
 
-    _last_pos = event->pos();
+    if ( _mode == Mode::RUBBER )
+    {
+        _last_pos = event->pos();
 
-    _rubber_band->setGeometry( { _last_pos, QSize() } );
-    _rubber_band->show();
+        _rubber_band->setGeometry( { _last_pos, QSize() } );
+        _rubber_band->show();
 
-    _selected = true;
+        _selected = true;
+    }
+
+    else if ( _mode == Mode::POLYGON )
+    {
+        _polygon << event->pos();
+        emit polygon( _polygon );
+    }
 
     emit mouse_press( event );
 }
@@ -45,9 +56,12 @@ void CustomLabel::mouseReleaseEvent( QMouseEvent* event )
 {
     if ( !_active ) return;
 
-    if ( _selected ) emit region( _last_pos, *_rubber_band );
+    if ( _mode == Mode::RUBBER )
+    {
+        if ( _selected ) emit region( _last_pos, *_rubber_band );
 
-    _selected = false;
+        _selected = false;
+    }
 
     emit mouse_release( event );
 }

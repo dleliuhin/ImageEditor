@@ -24,7 +24,7 @@ MainWindow::MainWindow( QWidget* parent )
     , _status_bar     ( new QStatusBar  ( this ) )
     , _tool_bar       ( new QToolBar    ( this ) )
     , _central_widget ( new QWidget     ( this ) )
-    , _label          ( new CustomLabel ( this ) )
+    , _label          ( new CustomLabel ( CustomLabel::Mode::RUBBER, this ) )
     , _image_viewer   ( new ImageView()          )
 {
     setMenuBar( _menu_bar );

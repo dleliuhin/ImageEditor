@@ -14,6 +14,7 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QStatusBar>
+#include <QColorDialog>
 
 //=======================================================================================
 class Region : public QMainWindow
@@ -28,6 +29,12 @@ public:
     //-----------------------------------------------------------------------------------
 
     QImage get();
+
+    //-----------------------------------------------------------------------------------
+
+public slots:
+
+    void draw( const QPolygonF& data );
 
     //-----------------------------------------------------------------------------------
 
@@ -49,7 +56,7 @@ private:
 
     QPixmap _pixmap;
     QImage  _image;
-
+    QColor _color;
     QSize _size;
 
 };
