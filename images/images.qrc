@@ -17,5 +17,7 @@
         <file>toRight.png</file>
         <file>logo.png</file>
         <file>quit.png</file>
+        <file>polygon.png</file>
+        <file>rgb.png</file>
     </qresource>
 </RCC>

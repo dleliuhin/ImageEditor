@@ -40,6 +40,7 @@ public slots:
     void mouse_move( QMouseEvent* event );
     void mouse_press( QMouseEvent* event );
     void mouse_release( QMouseEvent* event );
+    void mouse_wheel( QWheelEvent* event );
     void region( const QPoint& pos, const QRubberBand& region );
 
     //-----------------------------------------------------------------------------------
@@ -63,6 +64,7 @@ private:
     QAction* _action_to_right   { nullptr };
     QAction* _action_to_enlarge { nullptr };
     QAction* _action_to_lessen  { nullptr };
+    QAction* _action_polygon    { nullptr };
 
     //-----------------------------------------------------------------------------------
 
@@ -70,6 +72,7 @@ private:
     void _init_img_viewer();
     void _init_img_resource();
     void _load_img_resource();
+    void _init_connections();
 
 };
 //=======================================================================================
