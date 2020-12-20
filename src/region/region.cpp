@@ -1,6 +1,8 @@
 #include "region.h"
 
+#include <QPainterPath>
 #include <QScrollArea>
+#include <QPainter>
 #include <QDebug>
 
 //=======================================================================================
@@ -14,7 +16,7 @@ Region::Region( const QImage& img, QWidget* parent )
     , _tool_bar     ( new QToolBar( this ) )
     , _central      ( new QWidget( this )  )
     , _status_bar   ( new QStatusBar( this ) )
-    , _label        ( new CustomLabel( this ) )
+    , _label        ( new CustomLabel( CustomLabel::Mode::POLYGON, this ) )
     , _image_viewer ( new ImageView()      )
     , _image        ( img                  )
 {
@@ -24,9 +26,11 @@ Region::Region( const QImage& img, QWidget* parent )
     setCentralWidget( _central );
     setStatusBar( _status_bar );
 
-    _size = img.size() * 2;
+    _image.convertTo( QImage::Format_RGB888 );
 
-    _image_viewer->set( img.scaled( _size, Qt::KeepAspectRatio ) );
+    _size = _image.size() * 2;
+
+    _image_viewer->set( _image.scaled( _size, Qt::KeepAspectRatio ) );
 
     resize( _size );
 
@@ -68,6 +72,20 @@ Region::Region( const QImage& img, QWidget* parent )
 
     //-----------------------------------------------------------------------------------
 
+    connect( _action_pallete, &QAction::triggered, [ this ]
+    {
+        _color = QColorDialog::getColor( Qt::yellow, this );
+    } );
+
+    connect( _action_polygon, &QAction::triggered, [ this ]
+    {
+        _label->activate();
+    } );
+
+    connect( _label, &CustomLabel::polygon, this, &Region::draw );
+
+    //-----------------------------------------------------------------------------------
+
     setWindowTitle( "Subregion" + QString::number( reg_count++ ) );
 
     show();
@@ -86,4 +104,30 @@ Region::~Region()
 //=======================================================================================
 QImage Region::get()
 {}
+//=======================================================================================
+
+
+//=======================================================================================
+void Region::draw( const QPolygonF& data )
+{
+    _pixmap = _image_viewer->pixmap;
+    QPainter painter ( &_pixmap );
+    painter.setCompositionMode( QPainter::CompositionMode_SourceIn );
+
+    QPen pen( Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin );
+    painter.setPen( pen );
+
+    QBrush brush;
+    brush.setColor( _color );
+    brush.setStyle( Qt::SolidPattern );
+
+    QPainterPath path;
+    path.addPolygon( data );
+
+    painter.drawPolygon( data, Qt::OddEvenFill );
+    painter.fillPath( path, brush );
+//    painter.end();
+
+    _label->setPixmap( _pixmap );
+}
 //=======================================================================================

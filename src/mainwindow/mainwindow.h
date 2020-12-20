@@ -37,9 +37,6 @@ public slots:
 
     //-----------------------------------------------------------------------------------
 
-    void mouse_move( QMouseEvent* event );
-    void mouse_press( QMouseEvent* event );
-    void mouse_release( QMouseEvent* event );
     void mouse_wheel( QWheelEvent* event );
     void region( const QPoint& pos, const QRubberBand& region );
 

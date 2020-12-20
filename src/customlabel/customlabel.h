@@ -11,7 +11,14 @@ class CustomLabel : public QLabel
 
 public:
 
-    explicit CustomLabel( QWidget* parent = nullptr );
+    enum class Mode : int
+    {
+        UNDEF = 0,
+        RUBBER,
+        POLYGON,
+    };
+
+    explicit CustomLabel( const Mode mode = Mode::UNDEF, QWidget* parent = nullptr );
     virtual ~CustomLabel();
 
     void mouseMoveEvent( QMouseEvent* event ) override;
@@ -28,6 +35,7 @@ signals:
     void mouse_release( QMouseEvent* event );
     void mouse_wheel( QWheelEvent* event );
     void region( const QPoint& pos, const QRubberBand& region );
+    void polygon( const QPolygonF& data );
 
     //-----------------------------------------------------------------------------------
 
@@ -40,6 +48,7 @@ public slots:
 private:
 
     QRubberBand* _rubber_band { nullptr };
+    QPolygonF _polygon;
 
     //-----------------------------------------------------------------------------------
 
@@ -49,6 +58,8 @@ private:
     //-----------------------------------------------------------------------------------
 
     bool _active { false };
+
+    Mode _mode { Mode::UNDEF };
 
 };
 //=======================================================================================

@@ -24,7 +24,7 @@ MainWindow::MainWindow( QWidget* parent )
     , _status_bar     ( new QStatusBar  ( this ) )
     , _tool_bar       ( new QToolBar    ( this ) )
     , _central_widget ( new QWidget     ( this ) )
-    , _label          ( new CustomLabel ( this ) )
+    , _label          ( new CustomLabel ( CustomLabel::Mode::RUBBER, this ) )
     , _image_viewer   ( new ImageView()          )
 {
     setMenuBar( _menu_bar );
@@ -137,20 +137,11 @@ void MainWindow::to_less()
 
 
 //=======================================================================================
-void MainWindow::mouse_move( QMouseEvent* event )
-{}
-//=======================================================================================
-void MainWindow::mouse_press( QMouseEvent* event )
-{}
-//=======================================================================================
-void MainWindow::mouse_release( QMouseEvent* event )
-{}
-//=======================================================================================
-void MainWindow::mouse_wheel(QWheelEvent* event)
+void MainWindow::mouse_wheel( QWheelEvent* event )
 {
     bool ok { false };
 
-    if ( event->delta() > 0 )
+    if ( event->angleDelta().y() > 0 )
         ok = _image_viewer->zoom(12);
 
     else
@@ -158,7 +149,7 @@ void MainWindow::mouse_wheel(QWheelEvent* event)
 
     if ( !ok )
     {
-        QMessageBox::information(this, "Error", "Open a image, please!");
+        QMessageBox::information( this, "Error", "Open a image, please!" );
         return;
     }
 
@@ -267,7 +258,13 @@ void MainWindow::_init_window_componet()
     connect( _action_to_right,   &QAction::triggered, this, &MainWindow::to_right );
     connect( _action_to_enlarge, &QAction::triggered, this, &MainWindow::to_large );
     connect( _action_to_lessen,  &QAction::triggered, this, &MainWindow::to_less  );
-    connect( _action_polygon,    &QAction::triggered, [ this ]{ _label->activate(); } );
+
+    connect( _action_polygon,    &QAction::triggered, [ this ]
+    {
+        if ( !_image_viewer->fname.isEmpty() )
+            _label->activate();
+    } );
+
     connect( exit_action,        &QAction::triggered, this, &MainWindow::close    );
 }
 //=======================================================================================
@@ -301,9 +298,6 @@ void MainWindow::_load_img_resource()
 //=======================================================================================
 void MainWindow::_init_connections()
 {
-    connect( _label, &CustomLabel::mouse_move, this, &MainWindow::mouse_move );
-    connect( _label, &CustomLabel::mouse_press, this, &MainWindow::mouse_press );
-    connect( _label, &CustomLabel::mouse_release, this, &MainWindow::mouse_release );
     connect( _label, &CustomLabel::mouse_wheel, this, &MainWindow::mouse_wheel );
     connect( _label, &CustomLabel::region, this, &MainWindow::region );
 }
