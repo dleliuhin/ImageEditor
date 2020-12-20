@@ -23,12 +23,8 @@ class Region : public QMainWindow
 
 public:
 
-    explicit Region( const QImage& img,  QWidget* parent = nullptr );
+    explicit Region( const QImage& img, QWidget* parent = nullptr );
     virtual ~Region() override;
-
-    //-----------------------------------------------------------------------------------
-
-    QImage get();
 
     //-----------------------------------------------------------------------------------
 
@@ -40,12 +36,12 @@ public slots:
 
 private:
 
-    QMenuBar* _menu_bar     { nullptr };
-    QToolBar* _tool_bar     { nullptr };
-    QWidget*  _central      { nullptr };
-    QStatusBar* _status_bar { nullptr };
-    CustomLabel*   _label   { nullptr };
-    ImageView*_image_viewer { nullptr };
+    QMenuBar* _menu_bar      { nullptr };
+    QToolBar* _tool_bar      { nullptr };
+    QWidget* _central        { nullptr };
+    QStatusBar* _status_bar  { nullptr };
+    CustomLabel* _label      { nullptr };
+    ImageView* _image_viewer { nullptr };
 
     //-----------------------------------------------------------------------------------
 

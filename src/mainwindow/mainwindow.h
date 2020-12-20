@@ -1,7 +1,8 @@
 #pragma once
 
-#include "imageview.h"
 #include "customlabel.h"
+#include "multitab.h"
+#include "imageview.h"
 #include "region.h"
 
 #include <QMainWindow>
@@ -38,7 +39,6 @@ public slots:
     //-----------------------------------------------------------------------------------
 
     void mouse_wheel( QWheelEvent* event );
-    void region( const QPoint& pos, const QRubberBand& region );
 
     //-----------------------------------------------------------------------------------
 
@@ -50,8 +50,7 @@ private:
     QWidget*     _central_widget { nullptr };
     CustomLabel*  _label         { nullptr };
     ImageView*   _image_viewer   { nullptr };
-
-    QList<Region*> _regions;
+    Multitab*    _regions        { nullptr };
 
     //-----------------------------------------------------------------------------------
 

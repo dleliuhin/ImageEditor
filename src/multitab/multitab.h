@@ -1,5 +1,7 @@
 #pragma once
 
+#include "region.h"
+
 #include <QMainWindow>
 #include <QTabWidget>
 #include <QObject>
@@ -16,9 +18,15 @@ public:
 
     //-----------------------------------------------------------------------------------
 
+public slots:
+
+    void add_tab( Region* region );
+
+    //-----------------------------------------------------------------------------------
+
 private:
 
-    QTabWidget* _tab { nullptr };
+    QTabWidget* _tabs { nullptr };
 
 };
 //=======================================================================================

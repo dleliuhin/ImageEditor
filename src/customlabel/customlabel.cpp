@@ -68,8 +68,6 @@ void CustomLabel::mouseReleaseEvent( QMouseEvent* event )
 //=======================================================================================
 void CustomLabel::wheelEvent( QWheelEvent* event )
 {
-    if ( !_active ) return;
-
     if ( QApplication::keyboardModifiers() == Qt::ControlModifier )
         emit mouse_wheel( event );
 }

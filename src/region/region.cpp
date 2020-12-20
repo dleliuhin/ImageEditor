@@ -3,6 +3,7 @@
 #include <QPainterPath>
 #include <QScrollArea>
 #include <QPainter>
+#include <QWidget>
 #include <QDebug>
 
 //=======================================================================================
@@ -59,6 +60,8 @@ Region::Region( const QImage& img, QWidget* parent )
     image_scroll_area->setFrameShape( QFrame::NoFrame );
     image_scroll_area->setWidget( _label );
 
+    //-----------------------------------------------------------------------------------
+
     auto* main_layout = new QGridLayout( this );
 
     main_layout->addWidget( image_scroll_area, 0, 0 );
@@ -84,6 +87,21 @@ Region::Region( const QImage& img, QWidget* parent )
 
     connect( _label, &CustomLabel::polygon, this, &Region::draw );
 
+    connect( _label, &CustomLabel::mouse_wheel,
+             [ this ]( QWheelEvent* event )
+    {
+        bool ok { false };
+
+        if ( event->angleDelta().y() > 0 )
+            ok = _image_viewer->zoom(12);
+
+        else
+            ok = _image_viewer->zoom(8);
+
+        _label->setPixmap( _image_viewer->pixmap );
+        _label->resize( _image_viewer->size );
+    } );
+
     //-----------------------------------------------------------------------------------
 
     setWindowTitle( "Subregion" + QString::number( reg_count++ ) );
@@ -101,9 +119,6 @@ Region::~Region()
 
     close();
 }
-//=======================================================================================
-QImage Region::get()
-{}
 //=======================================================================================
 
 
