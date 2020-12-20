@@ -49,8 +49,18 @@ Region::Region( const QImage& img, QWidget* parent )
 
     //-----------------------------------------------------------------------------------
 
+    auto* exit_action = new QAction( "Exit", this );
+
+    exit_action->setStatusTip( "Exit" );
+    exit_action->setIcon( QIcon( ":/images/quit.png" ) );
+    exit_action->setShortcut( QKeySequence::Quit );
+
+    //-----------------------------------------------------------------------------------
+
     _tool_bar->addAction( _action_polygon );
     _tool_bar->addAction( _action_pallete );
+    _tool_bar->addSeparator();
+    _tool_bar->addAction( exit_action );
 
     //-----------------------------------------------------------------------------------
 
@@ -100,6 +110,12 @@ Region::Region( const QImage& img, QWidget* parent )
 
         _label->setPixmap( _image_viewer->pixmap );
         _label->resize( _image_viewer->size );
+    } );
+
+    connect( exit_action, &QAction::triggered, [ this ]
+    {
+        emit close_tab();
+        this->close();
     } );
 
     //-----------------------------------------------------------------------------------

@@ -1,5 +1,7 @@
 #include "multitab.h"
 
+//=======================================================================================
+
 static const QSize wsize( 720, 480 );
 
 //=======================================================================================
@@ -12,6 +14,8 @@ Multitab::Multitab( QWidget* parent )
     setCentralWidget( _tabs );
 
     show();
+
+    connect( _tabs, &QTabWidget::currentChanged, [&]( const int& id ){ _current = id; } );
 }
 //=======================================================================================
 Multitab::~Multitab()
@@ -31,5 +35,12 @@ void Multitab::add_tab( Region* region )
     _tabs->setCurrentWidget( region );
 
     resize( wsize );
+
+    connect( region, &Region::close_tab, this, &Multitab::close_tab );
+}
+//=======================================================================================
+void Multitab::close_tab()
+{
+    _tabs->removeTab( _current );
 }
 //=======================================================================================
