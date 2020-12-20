@@ -27,7 +27,7 @@ bool ImageView::open( const QString& caption,
 
     if ( fname.isEmpty() ) return false;
 
-    static auto info = QFileInfo( fname );
+    auto info = QFileInfo( fname );
 
     if ( !image.load( fname ) ) return false;
 
