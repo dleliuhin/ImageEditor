@@ -49,6 +49,7 @@ MainWindow::~MainWindow()
     delete _status_bar;
     delete _label;
     delete _image_viewer;
+    delete _regions;
 
     delete _action_open;
     delete _action_close;
@@ -82,12 +83,6 @@ void MainWindow::close()
 {
     _init_img_resource();
     _image_viewer->close();
-
-    for ( auto& r: _regions )
-        r->close();
-
-    qDeleteAll( _regions );
-    _regions.clear();
 }
 //=======================================================================================
 void MainWindow::to_left()
@@ -154,14 +149,6 @@ void MainWindow::mouse_wheel( QWheelEvent* event )
     }
 
     _load_img_resource();
-}
-//=======================================================================================
-void MainWindow::region( const QPoint& pos, const QRubberBand& region )
-{
-    _regions.append( new Region( _image_viewer->image.copy( pos.x(),
-                                                            pos.y(),
-                                                            region.width(),
-                                                            region.height() ) ) );
 }
 //=======================================================================================
 
@@ -299,6 +286,14 @@ void MainWindow::_load_img_resource()
 void MainWindow::_init_connections()
 {
     connect( _label, &CustomLabel::mouse_wheel, this, &MainWindow::mouse_wheel );
-    connect( _label, &CustomLabel::region, this, &MainWindow::region );
+    connect( _label, &CustomLabel::region,
+             [ this ]( const QPoint& pos, const QRubberBand& region )
+    {
+        if ( !_regions ) _regions = new Multitab;
+        _regions->add_tab( new Region( _image_viewer->image.copy( pos.x(),
+                                                                  pos.y(),
+                                                                  region.width(),
+                                                                  region.height() ) ) );
+    } );
 }
 //=======================================================================================
