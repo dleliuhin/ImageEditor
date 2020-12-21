@@ -11,7 +11,7 @@ It is planned to be used only in the Windows OS.
 
  3. <s>In this zoomed subregion; we should be able to draw and fill polygons with any color (Although only polygons are required as of now; lines could be required in the future - so we need to make plans for that).</s>
 
- 4. New subregions should be in a single MultiTabView of subwindow. This is because if there are overlapping subwindows , it creates some confusion regarding which overlapping polygon will have precedence/priority.
+ 4. <s>New subregions should be in a single MultiTabView of subwindow. This is because if there are overlapping subwindows , it creates some confusion regarding which overlapping polygon will have precedence/priority.</s>
 
  5. The polygon to be filled only after all the vertices have been decided. Each point can be merged    through the region. Each point must have own olygon ID number started from 1.
 
