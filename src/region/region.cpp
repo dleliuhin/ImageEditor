@@ -72,7 +72,7 @@ Region::Region( const QImage& img, QWidget* parent )
 
     //-----------------------------------------------------------------------------------
 
-    auto* main_layout = new QGridLayout( this );
+    auto* main_layout = new QGridLayout( _central );
 
     main_layout->addWidget( image_scroll_area, 0, 0 );
     _central->setLayout( main_layout );
@@ -129,11 +129,16 @@ Region::~Region()
 {
     reg_count--;
 
+    close();
+
+    delete _menu_bar;
     delete _tool_bar;
     delete _central;
-    delete _label;
+    delete _status_bar;
+    delete _image_viewer;
 
-    close();
+    delete _action_polygon;
+    delete _action_pallete;
 }
 //=======================================================================================
 

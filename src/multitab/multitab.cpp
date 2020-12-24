@@ -42,5 +42,8 @@ void Multitab::add_tab( Region* region )
 void Multitab::close_tab()
 {
     _tabs->removeTab( _current );
+
+    if( _tabs->count() == 0 )
+        emit tabs_empty();
 }
 //=======================================================================================

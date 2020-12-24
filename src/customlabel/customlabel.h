@@ -19,12 +19,7 @@ public:
     };
 
     explicit CustomLabel( const Mode mode = Mode::UNDEF, QWidget* parent = nullptr );
-    virtual ~CustomLabel();
-
-    void mouseMoveEvent( QMouseEvent* event ) override;
-    void mousePressEvent( QMouseEvent* event ) override;
-    void mouseReleaseEvent( QMouseEvent* event ) override;
-    void wheelEvent( QWheelEvent* event ) override;
+    virtual ~CustomLabel() override;
 
     //-----------------------------------------------------------------------------------
 
@@ -42,6 +37,15 @@ signals:
 public slots:
 
     void activate();
+
+    //-----------------------------------------------------------------------------------
+
+protected:
+
+    void mouseMoveEvent( QMouseEvent* event ) override;
+    void mousePressEvent( QMouseEvent* event ) override;
+    void mouseReleaseEvent( QMouseEvent* event ) override;
+    void wheelEvent( QWheelEvent* event ) override;
 
     //-----------------------------------------------------------------------------------
 

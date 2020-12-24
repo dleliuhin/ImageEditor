@@ -25,7 +25,7 @@ MainWindow::MainWindow( QWidget* parent )
     , _tool_bar       ( new QToolBar    ( this ) )
     , _central_widget ( new QWidget     ( this ) )
     , _label          ( new CustomLabel ( CustomLabel::Mode::RUBBER, this ) )
-    , _image_viewer   ( new ImageView()          )
+    , _image_viewer   ( new ImageView            )
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
@@ -263,7 +263,7 @@ void MainWindow::_init_img_viewer()
     image_scroll_area->setFrameShape( QFrame::NoFrame );
     image_scroll_area->setWidget( _label );
 
-    auto* main_layout = new QGridLayout( this );
+    auto* main_layout = new QGridLayout( _central_widget );
 
     main_layout->addWidget( image_scroll_area, 0, 0 );
     _central_widget->setLayout( main_layout );
@@ -289,7 +289,18 @@ void MainWindow::_init_connections()
     connect( _label, &CustomLabel::region,
              [ this ]( const QPoint& pos, const QRubberBand& region )
     {
-        if ( !_regions ) _regions = new Multitab;
+        if ( !_regions )
+        {
+            _regions = new Multitab( this );
+
+            connect( _regions, &Multitab::tabs_empty, [ this ]
+            {
+                _regions->hide();
+            } );
+        }
+
+        if ( _regions->isHidden() ) _regions->setHidden( false );
+
         _regions->add_tab( new Region( _image_viewer->image.copy( pos.x(),
                                                                   pos.y(),
                                                                   region.width(),
