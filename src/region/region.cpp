@@ -162,7 +162,7 @@ void Region::draw( const QPolygonF& data )
 
     painter.drawPolygon( data, Qt::OddEvenFill );
     painter.fillPath( path, brush );
-//    painter.end();
+    painter.end();
 
     _label->setPixmap( _pixmap );
 }
