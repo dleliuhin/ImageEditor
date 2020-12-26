@@ -45,13 +45,14 @@ public slots:
 
 private:
 
-    QMenuBar*    _menu_bar       { nullptr };
-    QStatusBar*  _status_bar     { nullptr };
-    QToolBar*    _tool_bar       { nullptr };
-    CustomLabel*  _label         { nullptr };
-    ImageView*   _image_viewer   { nullptr };
-    Multitab*    _regions        { nullptr };
-    QGraphicsView* _view         { nullptr };
+    QMenuBar*       _menu_bar     { nullptr };
+    QStatusBar*     _status_bar   { nullptr };
+    QToolBar*       _tool_bar     { nullptr };
+    CustomLabel*    _label        { nullptr };
+    ImageView*      _image_viewer { nullptr };
+    Multitab*       _regions      { nullptr };
+    QGraphicsScene* _scene        { nullptr };
+    QGraphicsView*  _view         { nullptr };
 
     //-----------------------------------------------------------------------------------
 

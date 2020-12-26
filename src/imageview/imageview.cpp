@@ -4,17 +4,13 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QImageReader>
-#include <QGraphicsView>
 
 //=======================================================================================
 ImageView::ImageView( QWidget* parent )
     : QWidget ( parent                     )
-    , scene   ( new QGraphicsScene( this ) )
 {
     resize( QSize( 1280, 800 ) );
     setWindowTitle( "QImageViewer" );
-
-    scene->addItem( &pixmap );
 }
 //=======================================================================================
 ImageView::~ImageView()
@@ -104,7 +100,7 @@ bool ImageView::_changed( const int& angle, const int& scale )
 
     img_rotate = img_scaled.transformed( matrix );
 
-    pixmap.setPixmap( QPixmap::fromImage( img_rotate ) );
+    pixmap = QPixmap::fromImage( img_rotate );
 
     return true;
 }

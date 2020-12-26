@@ -25,19 +25,21 @@ MainWindow::MainWindow( QWidget* parent )
     , _tool_bar       ( new QToolBar    ( this )                            )
     , _label          ( new CustomLabel ( CustomLabel::Mode::RUBBER, this ) )
     , _image_viewer   ( new ImageView                                       )
-    , _view           ( new QGraphicsView( _image_viewer->scene, this )     )
+    , _scene          ( new QGraphicsScene( this )                          )
+    , _view           ( new QGraphicsView( this )                           )
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
+    setCentralWidget( _view );
     setStatusBar( _status_bar );
     resize( wsize );
 
-    setCentralWidget( _view );
-
-    _view->show();
-
     _init_window_componet();
     _init_connections();
+
+    _view->setScene( _scene );
+
+    _view->show();
 }
 //=======================================================================================
 MainWindow::~MainWindow()
@@ -50,6 +52,8 @@ MainWindow::~MainWindow()
     delete _label;
     delete _image_viewer;
     delete _regions;
+    delete _scene;
+    delete _view;
 
     delete _action_open;
     delete _action_close;
@@ -75,6 +79,8 @@ void MainWindow::open()
         QMessageBox::information( this, "Error", "Open a file failed!" );
         return;
     }
+
+    _label->setPixmap( _image_viewer->pixmap );
 }
 //=======================================================================================
 void MainWindow::close()
@@ -89,6 +95,8 @@ void MainWindow::to_left()
         QMessageBox::information( this, "Error", "Open a image, please!" );
         return;
     }
+
+    _label->setPixmap( _image_viewer->pixmap );
 }
 //=======================================================================================
 void MainWindow::to_right()
@@ -98,6 +106,8 @@ void MainWindow::to_right()
         QMessageBox::information( this, "Error", "Open a image, please!" );
         return;
     }
+
+    _label->setPixmap( _image_viewer->pixmap );
 }
 //=======================================================================================
 void MainWindow::to_large()
@@ -107,15 +117,19 @@ void MainWindow::to_large()
         QMessageBox::information(this, "Error", "Open a image, please!");
         return;
     }
+
+    _label->setPixmap( _image_viewer->pixmap );
 }
 //=======================================================================================
 void MainWindow::to_less()
 {
-    if ( !_image_viewer->zoom( 8 ) )
+    if ( !_image_viewer->zoom(8) )
     {
         QMessageBox::information(this, "Error", "Open a image, please!");
         return;
     }
+
+    _label->setPixmap( _image_viewer->pixmap );
 }
 //=======================================================================================
 
@@ -240,6 +254,10 @@ void MainWindow::_init_window_componet()
     } );
 
     connect( exit_action,        &QAction::triggered, this, &MainWindow::close    );
+
+    //-----------------------------------------------------------------------------------
+
+    _scene->addWidget( _label );
 }
 //=======================================================================================
 void MainWindow::_init_connections()

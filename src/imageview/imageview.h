@@ -8,8 +8,6 @@
 #include <QFileInfo>
 #include <QFileInfoList>
 #include <QWheelEvent>
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
 
 //=======================================================================================
 class ImageView : public QWidget
@@ -25,11 +23,9 @@ public:
 
     QString fname;
     QImage image;
-    QGraphicsPixmapItem pixmap;
+    QPixmap pixmap;
     QSize size;
     int angle {0};
-
-    QGraphicsScene* scene;
 
     //-----------------------------------------------------------------------------------
 
