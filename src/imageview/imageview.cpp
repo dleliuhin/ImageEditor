@@ -4,13 +4,17 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QImageReader>
+#include <QGraphicsView>
 
 //=======================================================================================
 ImageView::ImageView( QWidget* parent )
-    : QWidget ( parent )
+    : QWidget ( parent                     )
+    , scene   ( new QGraphicsScene( this ) )
 {
     resize( QSize( 1280, 800 ) );
     setWindowTitle( "QImageViewer" );
+
+    scene->addItem( &pixmap );
 }
 //=======================================================================================
 ImageView::~ImageView()
@@ -26,8 +30,6 @@ bool ImageView::open( const QString& caption,
     fname = QFileDialog::getOpenFileName( this, caption, dir, filter );
 
     if ( fname.isEmpty() ) return false;
-
-    auto info = QFileInfo( fname );
 
     if ( !image.load( fname ) ) return false;
 
@@ -102,7 +104,7 @@ bool ImageView::_changed( const int& angle, const int& scale )
 
     img_rotate = img_scaled.transformed( matrix );
 
-    pixmap = QPixmap::fromImage( img_rotate );
+    pixmap.setPixmap( QPixmap::fromImage( img_rotate ) );
 
     return true;
 }

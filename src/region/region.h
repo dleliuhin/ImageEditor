@@ -56,7 +56,7 @@ private:
 
     //-----------------------------------------------------------------------------------
 
-    QPixmap _pixmap;
+    QGraphicsPixmapItem _pixmap;
     QImage  _image;
     QColor _color;
     QSize _size;

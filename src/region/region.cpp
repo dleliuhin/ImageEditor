@@ -1,10 +1,10 @@
 #include "region.h"
 
+#include <QDebug>
+#include <QPainter>
 #include <QPainterPath>
 #include <QScrollArea>
-#include <QPainter>
 #include <QWidget>
-#include <QDebug>
 
 //=======================================================================================
 
@@ -80,7 +80,7 @@ Region::Region( const QImage& img, QWidget* parent )
     //-----------------------------------------------------------------------------------
 
     _label->clear();
-    _label->setPixmap( _image_viewer->pixmap );
+//    _label->setPixmap( _image_viewBer->pixmap );
     _label->resize( _image_viewer->size );
 
     //-----------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ Region::Region( const QImage& img, QWidget* parent )
         else
             ok = _image_viewer->zoom(8);
 
-        _label->setPixmap( _image_viewer->pixmap );
+//        _label->setPixmap( _image_viewer->pixmap );
         _label->resize( _image_viewer->size );
     } );
 
@@ -146,24 +146,24 @@ Region::~Region()
 //=======================================================================================
 void Region::draw( const QPolygonF& data )
 {
-    _pixmap = _image_viewer->pixmap;
-    QPainter painter ( &_pixmap );
-    painter.setCompositionMode( QPainter::CompositionMode_SourceIn );
+//    _pixmap = _image_viewer->pixmap;
+//    QPainter painter ( &_pixmap );
+//    painter.setCompositionMode( QPainter::CompositionMode_SourceIn );
 
-    QPen pen( Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin );
-    painter.setPen( pen );
+//    QPen pen( Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin );
+//    painter.setPen( pen );
 
-    QBrush brush;
-    brush.setColor( _color );
-    brush.setStyle( Qt::SolidPattern );
+//    QBrush brush;
+//    brush.setColor( _color );
+//    brush.setStyle( Qt::SolidPattern );
 
-    QPainterPath path;
-    path.addPolygon( data );
+//    QPainterPath path;
+//    path.addPolygon( data );
 
-    painter.drawPolygon( data, Qt::OddEvenFill );
-    painter.fillPath( path, brush );
-    painter.end();
+//    painter.drawPolygon( data, Qt::OddEvenFill );
+//    painter.fillPath( path, brush );
+//    painter.end();
 
-    _label->setPixmap( _pixmap );
+//    _label->setPixmap( _pixmap );
 }
 //=======================================================================================

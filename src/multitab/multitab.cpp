@@ -53,5 +53,7 @@ void Multitab::close_tab()
 void Multitab::closeEvent( QCloseEvent* event )
 {
     _tabs->clear();
+
+    Q_UNUSED( event );
 }
 //=======================================================================================

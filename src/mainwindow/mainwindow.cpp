@@ -19,23 +19,24 @@ static const QSize wsize( 1200, 800 );
 
 //=======================================================================================
 MainWindow::MainWindow( QWidget* parent )
-    : QMainWindow     ( parent                   )
-    , _menu_bar       ( new QMenuBar    ( this ) )
-    , _status_bar     ( new QStatusBar  ( this ) )
-    , _tool_bar       ( new QToolBar    ( this ) )
-    , _central_widget ( new QWidget     ( this ) )
+    : QMainWindow     ( parent                                              )
+    , _menu_bar       ( new QMenuBar    ( this )                            )
+    , _status_bar     ( new QStatusBar  ( this )                            )
+    , _tool_bar       ( new QToolBar    ( this )                            )
     , _label          ( new CustomLabel ( CustomLabel::Mode::RUBBER, this ) )
-    , _image_viewer   ( new ImageView            )
+    , _image_viewer   ( new ImageView                                       )
+    , _view           ( new QGraphicsView( _image_viewer->scene, this )     )
 {
     setMenuBar( _menu_bar );
     addToolBar( _tool_bar );
-    setCentralWidget( _central_widget );
     setStatusBar( _status_bar );
     resize( wsize );
 
+    setCentralWidget( _view );
+
+    _view->show();
+
     _init_window_componet();
-    _init_img_viewer();
-    _init_img_resource();
     _init_connections();
 }
 //=======================================================================================
@@ -45,7 +46,6 @@ MainWindow::~MainWindow()
 
     delete _menu_bar;
     delete _tool_bar;
-    delete _central_widget;
     delete _status_bar;
     delete _label;
     delete _image_viewer;
@@ -75,13 +75,10 @@ void MainWindow::open()
         QMessageBox::information( this, "Error", "Open a file failed!" );
         return;
     }
-
-    _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::close()
 {
-    _init_img_resource();
     _image_viewer->close();
 }
 //=======================================================================================
@@ -92,8 +89,6 @@ void MainWindow::to_left()
         QMessageBox::information( this, "Error", "Open a image, please!" );
         return;
     }
-
-    _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_right()
@@ -103,8 +98,6 @@ void MainWindow::to_right()
         QMessageBox::information( this, "Error", "Open a image, please!" );
         return;
     }
-
-    _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_large()
@@ -114,8 +107,6 @@ void MainWindow::to_large()
         QMessageBox::information(this, "Error", "Open a image, please!");
         return;
     }
-
-    _load_img_resource();
 }
 //=======================================================================================
 void MainWindow::to_less()
@@ -125,8 +116,6 @@ void MainWindow::to_less()
         QMessageBox::information(this, "Error", "Open a image, please!");
         return;
     }
-
-    _load_img_resource();
 }
 //=======================================================================================
 
@@ -147,8 +136,6 @@ void MainWindow::mouse_wheel( QWheelEvent* event )
         QMessageBox::information( this, "Error", "Open a image, please!" );
         return;
     }
-
-    _load_img_resource();
 }
 //=======================================================================================
 
@@ -255,56 +242,28 @@ void MainWindow::_init_window_componet()
     connect( exit_action,        &QAction::triggered, this, &MainWindow::close    );
 }
 //=======================================================================================
-void MainWindow::_init_img_viewer()
-{
-    auto* image_scroll_area = new QScrollArea( this );
-
-    image_scroll_area->setAlignment( Qt::AlignCenter );
-    image_scroll_area->setFrameShape( QFrame::NoFrame );
-    image_scroll_area->setWidget( _label );
-
-    auto* main_layout = new QGridLayout( _central_widget );
-
-    main_layout->addWidget( image_scroll_area, 0, 0 );
-    _central_widget->setLayout( main_layout );
-}
-//=======================================================================================
-void MainWindow::_init_img_resource()
-{
-    _label->clear();
-    _label->resize( wsize );
-    setWindowTitle( "Image" );
-}
-//=======================================================================================
-void MainWindow::_load_img_resource()
-{
-    _label->setPixmap( _image_viewer->pixmap );
-    _label->resize( _image_viewer->size );
-    setWindowTitle( QFileInfo( _image_viewer->fname ).fileName() + " - Image" );
-}
-//=======================================================================================
 void MainWindow::_init_connections()
 {
-    connect( _label, &CustomLabel::mouse_wheel, this, &MainWindow::mouse_wheel );
-    connect( _label, &CustomLabel::region,
-             [ this ]( const QPoint& pos, const QRubberBand& region )
-    {
-        if ( !_regions )
-        {
-            _regions = new Multitab( this );
+//    connect( _label, &CustomLabel::mouse_wheel, this, &MainWindow::mouse_wheel );
+//    connect( _label, &CustomLabel::region,
+//             [ this ]( const QPoint& pos, const QRubberBand& region )
+//    {
+//        if ( !_regions )
+//        {
+//            _regions = new Multitab( this );
 
-            connect( _regions, &Multitab::tabs_empty, [ this ]
-            {
-                _regions->hide();
-            } );
-        }
+//            connect( _regions, &Multitab::tabs_empty, [ this ]
+//            {
+//                _regions->hide();
+//            } );
+//        }
 
-        if ( _regions->isHidden() ) _regions->setHidden( false );
+//        if ( _regions->isHidden() ) _regions->setHidden( false );
 
-        _regions->add_tab( new Region( _image_viewer->image.copy( pos.x(),
-                                                                  pos.y(),
-                                                                  region.width(),
-                                                                  region.height() ) ) );
-    } );
+//        _regions->add_tab( new Region( _image_viewer->image.copy( pos.x(),
+//                                                                  pos.y(),
+//                                                                  region.width(),
+//                                                                  region.height() ) ) );
+//    } );
 }
 //=======================================================================================

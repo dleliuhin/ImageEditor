@@ -14,6 +14,7 @@
 #include <QFileInfoList>
 #include <QMouseEvent>
 #include <QRubberBand>
+#include <QGraphicsView>
 
 //=======================================================================================
 class MainWindow : public QMainWindow
@@ -47,10 +48,10 @@ private:
     QMenuBar*    _menu_bar       { nullptr };
     QStatusBar*  _status_bar     { nullptr };
     QToolBar*    _tool_bar       { nullptr };
-    QWidget*     _central_widget { nullptr };
     CustomLabel*  _label         { nullptr };
     ImageView*   _image_viewer   { nullptr };
     Multitab*    _regions        { nullptr };
+    QGraphicsView* _view         { nullptr };
 
     //-----------------------------------------------------------------------------------
 
@@ -65,9 +66,6 @@ private:
     //-----------------------------------------------------------------------------------
 
     void _init_window_componet();
-    void _init_img_viewer();
-    void _init_img_resource();
-    void _load_img_resource();
     void _init_connections();
 
 };
