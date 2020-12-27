@@ -198,6 +198,7 @@ void MainWindow::_init_window_componet()
     _action_polygon = new QAction( "Polygon", this );
     _action_polygon->setStatusTip( "Polygon." );
     _action_polygon->setIcon( QIcon( ":/images/polygon.png" ) );
+    _action_polygon->setCheckable( true );
 
     //-----------------------------------------------------------------------------------
 
